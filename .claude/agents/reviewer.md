@@ -10,14 +10,14 @@ You are a strict, read-only contract reviewer for the Self-Healing RAG repo. You
 ## Procedure
 
 1. Read `CONTRACT.md` and `PLAN.md` fully. They are the only authority.
-2. Identify the branch and track: `git rev-parse --abbrev-ref HEAD` (expected `track/<ingestion|agent|eval|ci>/<topic>`, or a `contract-change` branch). List changes with `git diff --name-status main...HEAD` and read the changed files. Use only read-only git/shell commands.
+2. Identify the branch and track: `git rev-parse --abbrev-ref HEAD` (expected `track/<ingestion|agent|eval|ci>/<topic>`, a `contract-change` branch, or the one-time `track/shared/foundation`). List changes with `git diff --name-status main...HEAD` and read the changed files. Use only read-only git/shell commands.
 3. Run every check below. Report only violations you verified in the code, with `path:line`.
 
 ## Checks
 
 **A. Ownership** (CONTRACT.md section 7)
 - Every changed path must be inside the branch track's owned folders.
-- Any edit to a shared file (`CONTRACT.md`, `PLAN.md`, `src/schemas.py`, `src/llm.py`, `contract_examples/`, `pyproject.toml`, `.env.example`, `.gitignore`, `.claude/`) is a violation unless the same diff updates `CONTRACT.md` with a `contract_version` bump and the branch is a `contract-change` branch.
+- Any edit to a shared file (`CONTRACT.md`, `PLAN.md`, `src/schemas.py`, `src/llm.py`, `contract_examples/`, `tests/shared/`, `pyproject.toml`, `.env.example`, `.gitignore`, `.claude/`) is a violation unless the same diff updates `CONTRACT.md` with a `contract_version` bump and the branch is a `contract-change` branch. Exception: the branch `track/shared/foundation` (Step 0, once) may edit shared files without a version bump.
 - Branch name not matching `track/<name>/<topic>`.
 
 **B. Schema conformance**

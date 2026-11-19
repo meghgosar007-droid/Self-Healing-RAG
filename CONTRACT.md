@@ -147,10 +147,10 @@ When it runs: pull requests run `--mode smoke`; pushes to `main` and a nightly s
 | agent | `src/agent/`, `tests/agent/` |
 | eval | `eval/`, `tests/eval/` |
 | ci | `ci/`, `.github/`, `tests/ci/` |
-| shared | `CONTRACT.md`, `PLAN.md`, `src/schemas.py`, `src/llm.py`, `contract_examples/`, `pyproject.toml`, `.env.example`, `.gitignore`, `.claude/` |
+| shared | `CONTRACT.md`, `PLAN.md`, `src/schemas.py`, `src/llm.py`, `contract_examples/`, `tests/shared/`, `pyproject.toml`, `.env.example`, `.gitignore`, `.claude/` |
 
 Rules:
-1. A track edits only its own folders. Branches are named `track/<name>/<topic>`.
+1. A track edits only its own folders. Branches are named `track/<name>/<topic>`. The one-time Step 0 foundation branch `track/shared/foundation` creates the shared files and is exempt from the `contract_version` bump in rule 2; after it merges, rule 2 applies to every shared-file change.
 2. Shared files change only via a PR labeled `contract-change` that updates `CONTRACT.md` (and bumps `contract_version`) in the same diff, with the reviewer agent passing and your approval.
 3. A track needing a contract change opens that PR first; it does not work around the contract.
 4. Source control is Git + GitHub on the existing `main`. Nobody runs `git init`. All changes land by PR, and `main` is protected by the CI gate.
