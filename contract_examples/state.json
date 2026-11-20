@@ -1,0 +1,35 @@
+{
+  "question": "How does GRPO avoid needing a value model?",
+  "sub_queries": [
+    "GRPO baseline from group reward statistics",
+    "GRPO versus PPO value model"
+  ],
+  "chunks": [
+    {
+      "id": "deepseek-math:4-1-grpo:p12:0",
+      "paper": "deepseek-math",
+      "section": "4.1 GRPO",
+      "page": 12,
+      "text": "Group Relative Policy Optimization (GRPO) samples a group of outputs for each question and uses the group's reward statistics as the baseline, so no separate value model is needed.",
+      "embedding_model": "BAAI/bge-small-en-v1.5"
+    }
+  ],
+  "answer": "GRPO samples a group of outputs per question and uses the group's reward statistics as the baseline, so it does not need a separate value model [deepseek-math:4-1-grpo:p12:0].",
+  "claims": [
+    {
+      "text": "GRPO uses the reward statistics of a sampled group of outputs as the baseline.",
+      "chunk_ids": ["deepseek-math:4-1-grpo:p12:0"]
+    },
+    {
+      "text": "GRPO does not require a separate value model.",
+      "chunk_ids": ["deepseek-math:4-1-grpo:p12:0"]
+    }
+  ],
+  "critic_verdict": {
+    "verdict": "pass",
+    "unsupported_claims": [],
+    "reason": "Both claims are entailed by the cited chunk."
+  },
+  "retry_count": 0,
+  "final_status": "answered"
+}

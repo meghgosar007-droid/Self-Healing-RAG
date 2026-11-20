@@ -1,0 +1,79 @@
+{
+  "meta": {
+    "contract_version": 2,
+    "eval_mode": "smoke",
+    "prompt_version": "agent-1.0.0",
+    "judge_prompt_version": "judge-1.0.0",
+    "corpus_version": "a1b2c3d4e5f6",
+    "generator_model": "gemini-2.5-flash",
+    "critic_model": "gemini-2.5-flash",
+    "judge_model": "gemini-2.5-pro",
+    "git_sha": "0000000000000000000000000000000000000000",
+    "timestamp": "2026-11-20T09:00:00+00:00"
+  },
+  "results": [
+    {
+      "id": "q001", "system": "self_healing", "question": "How does GRPO avoid needing a value model?", "answerable": true,
+      "final_status": "answered", "answer": "GRPO uses the group's reward statistics as the baseline [deepseek-math:4-1-grpo:p12:0].", "retry_count": 1,
+      "retrieved_chunk_ids": ["deepseek-math:4-1-grpo:p12:0"],
+      "claims": [{"text": "GRPO uses group reward statistics as the baseline.", "chunk_ids": ["deepseek-math:4-1-grpo:p12:0"], "verdict": "supported"}],
+      "outcome": "answered_ok", "latency_ms": 4200, "llm_wait_ms": 400, "tokens_in": 3000, "tokens_out": 400
+    },
+    {
+      "id": "q002", "system": "self_healing", "question": "What learning rate did Dr. GRPO use for its largest model?", "answerable": true,
+      "final_status": "refused", "answer": null, "retry_count": 2,
+      "retrieved_chunk_ids": ["dr-grpo:3-1-biases-in-grpo:p4:0"],
+      "claims": [],
+      "outcome": "false_refusal", "latency_ms": 6100, "llm_wait_ms": 1100, "tokens_in": 5200, "tokens_out": 300
+    },
+    {
+      "id": "q003", "system": "self_healing", "question": "What is the weather in Paris today?", "answerable": false,
+      "final_status": "refused", "answer": null, "retry_count": 0,
+      "retrieved_chunk_ids": [],
+      "claims": [],
+      "outcome": "correct_refusal", "latency_ms": 1500, "llm_wait_ms": 0, "tokens_in": 900, "tokens_out": 50
+    },
+    {
+      "id": "q001", "system": "plain", "question": "How does GRPO avoid needing a value model?", "answerable": true,
+      "final_status": "answered", "answer": "GRPO uses the group's reward statistics as the baseline [deepseek-math:4-1-grpo:p12:0].", "retry_count": 0,
+      "retrieved_chunk_ids": ["deepseek-math:4-1-grpo:p12:0"],
+      "claims": [{"text": "GRPO uses group reward statistics as the baseline.", "chunk_ids": ["deepseek-math:4-1-grpo:p12:0"], "verdict": "supported"}],
+      "outcome": "answered_ok", "latency_ms": 1800, "llm_wait_ms": 200, "tokens_in": 1500, "tokens_out": 300
+    },
+    {
+      "id": "q002", "system": "plain", "question": "What learning rate did Dr. GRPO use for its largest model?", "answerable": true,
+      "final_status": "answered", "answer": "Dr. GRPO used a learning rate of 1e-4 for its largest model.", "retry_count": 0,
+      "retrieved_chunk_ids": ["dr-grpo:3-1-biases-in-grpo:p4:0"],
+      "claims": [
+        {"text": "Dr. GRPO modifies the GRPO objective.", "chunk_ids": ["dr-grpo:3-1-biases-in-grpo:p4:0"], "verdict": "supported"},
+        {"text": "Dr. GRPO used a learning rate of 1e-4 for its largest model.", "chunk_ids": [], "verdict": "unsupported"}
+      ],
+      "outcome": "hallucinated", "latency_ms": 2000, "llm_wait_ms": 300, "tokens_in": 1500, "tokens_out": 250
+    },
+    {
+      "id": "q003", "system": "plain", "question": "What is the weather in Paris today?", "answerable": false,
+      "final_status": "answered", "answer": "It is sunny in Paris today.", "retry_count": 0,
+      "retrieved_chunk_ids": ["deepseek-r1:2-2-reinforcement-learning:p5:0"],
+      "claims": [{"text": "It is sunny in Paris today.", "chunk_ids": [], "verdict": "unsupported"}],
+      "outcome": "hallucinated", "latency_ms": 1700, "llm_wait_ms": 100, "tokens_in": 1400, "tokens_out": 200
+    }
+  ],
+  "aggregates": {
+    "plain": {
+      "n_questions": 3, "n_answerable": 2, "n_unanswerable": 1, "n_answered": 3, "n_refused": 0,
+      "hallucination_rate": 0.6667, "faithfulness": 0.5,
+      "correct_refusals": {"count": 0, "rate": 0.0},
+      "false_refusals": {"count": 0, "rate": 0.0},
+      "latency_ms": {"p50": 1600, "p95": 1700},
+      "cost_usd_estimate": 0.0009, "tokens_in": 4400, "tokens_out": 750
+    },
+    "self_healing": {
+      "n_questions": 3, "n_answerable": 2, "n_unanswerable": 1, "n_answered": 1, "n_refused": 2,
+      "hallucination_rate": 0.0, "faithfulness": 1.0,
+      "correct_refusals": {"count": 1, "rate": 1.0},
+      "false_refusals": {"count": 1, "rate": 0.5},
+      "latency_ms": {"p50": 3800, "p95": 5000},
+      "cost_usd_estimate": 0.0021, "tokens_in": 9100, "tokens_out": 750
+    }
+  }
+}
