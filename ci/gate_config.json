@@ -1,0 +1,6 @@
+{
+  "hallucination_rate_max": 0.05,
+  "false_refusal_rate_max": 0.10,
+  "p95_latency_regression_max": 0.25,
+  "p50_latency_regression_max": 0.25
+}
