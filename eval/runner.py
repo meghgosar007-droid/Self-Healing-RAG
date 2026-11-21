@@ -24,7 +24,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, Literal
 
-from eval import dataset, metrics
+from eval import dataset, metrics, transient
 from eval.judge import JUDGE_PROMPT_VERSION, DiskCache, Judge, NullCache
 from src import llm
 from src.schemas import CONTRACT_VERSION, EvalResult, Meta, ResultRow, State, System
@@ -101,14 +101,20 @@ def run_one(
     pricing: dict[str, Any],
     seen: ModelsSeen,
     clock: Callable[[], float] = time.perf_counter,
+    sleep: Callable[[float], None] = time.sleep,
 ) -> Scored:
-    with llm.track() as usage:
-        start = clock()
-        try:
+    def attempt() -> tuple[State, int, Any]:
+        with llm.track() as usage:  # fresh scope per attempt: a failed attempt is not billed
+            start = clock()
             state = agent(q.question)
-        except Exception as exc:
-            raise EvalError(f"{system} agent failed on {q.id}: {exc!r}") from exc
-        latency_ms = max(0, round((clock() - start) * 1000))
+            return state, max(0, round((clock() - start) * 1000)), usage
+
+    try:
+        state, latency_ms, usage = transient.with_retry(
+            attempt, sleep=sleep, what=f"{system} agent on {q.id}"
+        )
+    except Exception as exc:
+        raise EvalError(f"{system} agent failed on {q.id}: {exc!r}") from exc
 
     status = state["final_status"]
     if status not in ("answered", "refused"):

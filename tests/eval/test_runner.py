@@ -84,7 +84,8 @@ def test_latency_is_wall_clock_per_question():
     assert {r.latency_ms for r in result.results} == {250}  # one 0.25 s tick per agent call
 
 
-def test_agent_usage_flows_into_tokens_wait_models_and_cost():
+def test_agent_usage_flows_into_tokens_wait_models_and_cost(monkeypatch):
+    monkeypatch.setenv("GEN_MODEL", "gemini-2.5-flash")  # hermetic: ignore the real .env
     """Real src.llm accounting: tokens, queue/backoff wait and the model actually used."""
 
     class Chat:
@@ -272,3 +273,79 @@ def test_corpus_version_read_from_manifest(tmp_path):
     assert runner.read_corpus_version(p) == "abcdef012345"
     with pytest.raises(runner.EvalError):
         runner.read_corpus_version(tmp_path / "missing.json")
+
+
+# --- transient network errors -------------------------------------------------------------
+
+
+class RemoteProtocolError(Exception):  # same class name httpx raises
+    pass
+
+
+@pytest.fixture
+def no_backoff(monkeypatch):
+    from eval import transient
+
+    monkeypatch.setattr(transient, "BACKOFF_S", 0)
+
+
+def flaky(real, failures, exc):
+    state = {"left": failures}
+
+    def agent(question):
+        if state["left"] > 0:
+            state["left"] -= 1
+            raise exc
+        return real(question)
+
+    return agent, state
+
+
+def test_agent_retries_dropped_connections_then_succeeds(no_backoff):
+    base = fakes.fake_agents({})
+    agent, state = flaky(base["self_healing"], 2, RemoteProtocolError("Server disconnected"))
+    result = go(questions=qs()[:1], agents={"plain": base["plain"], "self_healing": agent})
+    assert state["left"] == 0 and len(result.results) == 2
+
+
+def test_agent_gives_up_after_three_transient_failures(no_backoff):
+    base = fakes.fake_agents({})
+    agent, _ = flaky(base["self_healing"], 5, RemoteProtocolError("Server disconnected"))
+    with pytest.raises(runner.EvalError, match="q1"):
+        go(questions=qs()[:1], agents={"plain": base["plain"], "self_healing": agent})
+
+
+def test_non_transient_errors_are_not_retried(no_backoff):
+    base = fakes.fake_agents({})
+    agent, state = flaky(base["self_healing"], 1, ValueError("bug"))
+    with pytest.raises(runner.EvalError):
+        go(questions=qs()[:1], agents={"plain": base["plain"], "self_healing": agent})
+    assert state["left"] == 0  # called once, not retried
+
+
+def test_transient_detected_through_exception_chain():
+    from eval import transient
+
+    try:
+        try:
+            raise RemoteProtocolError("x")
+        except RemoteProtocolError as inner:
+            raise RuntimeError("wrapped") from inner
+    except RuntimeError as outer:
+        assert transient.is_transient(outer)
+    assert not transient.is_transient(ValueError("nope"))
+
+
+def test_judge_retries_dropped_connections(no_backoff):
+    calls = {"n": 0}
+    real = fakes.FakeJudgeLLM("judge-m")
+
+    def flaky_llm(system, user):
+        calls["n"] += 1
+        if calls["n"] == 1:
+            raise RemoteProtocolError("Server disconnected")
+        return real(system, user)
+
+    judge = Judge(flaky_llm, NullCache(), model_name=lambda: "judge-m")
+    result = go(questions=qs()[:1], judge=judge)
+    assert len(result.results) == 2

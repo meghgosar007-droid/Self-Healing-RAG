@@ -17,6 +17,7 @@ from typing import Any
 
 from langchain_core.messages import HumanMessage, SystemMessage
 
+from eval import transient
 from eval.judge import prompts
 from eval.judge.cache import DiskCache, NullCache, cache_key
 from src import llm
@@ -172,7 +173,9 @@ class Judge:
         data: dict[str, Any] | None = None
         model = requested
         for attempt in (user, user + _REMINDER):
-            reply = self._call(system, attempt)
+            reply = transient.with_retry(
+                lambda text=attempt: self._call(system, text), what=f"judge {stage}"
+            )
             model = reply.model
             tokens_in += reply.tokens_in
             tokens_out += reply.tokens_out
