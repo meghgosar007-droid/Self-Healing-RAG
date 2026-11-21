@@ -79,6 +79,14 @@ jobs:
           key: hf-bge-small-en-v1.5
       - name: Rebuild index from committed chunks
         run: python -m src.ingestion.ingest --rebuild-index
+      - name: Validate GEMINI_API_KEY is plain ASCII (never prints it)
+        run: |
+          python - <<'PY'
+          import os, sys
+          k = os.environ.get("GEMINI_API_KEY", "")
+          if not k or not (k.isascii() and k.isprintable() and k == k.strip()):
+              sys.exit("GEMINI_API_KEY secret is missing or malformed (BOM / whitespace / non-ASCII); re-set it")
+          PY
       - name: Run eval (${{ env.EVAL_MODE }})
         run: python -m eval.runner --mode "$EVAL_MODE" --run-id "ci-$EVAL_MODE-$GITHUB_RUN_ID"
       - name: Gate
