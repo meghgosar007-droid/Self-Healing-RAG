@@ -64,6 +64,12 @@ jobs:
       pull-requests: write
     env:
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      GEN_MODEL: ${{ vars.GEN_MODEL }}
+      GEN_MODEL_FALLBACK: ${{ vars.GEN_MODEL_FALLBACK }}
+      CRITIC_MODEL: ${{ vars.CRITIC_MODEL }}
+      CRITIC_MODEL_FALLBACK: ${{ vars.CRITIC_MODEL_FALLBACK }}
+      JUDGE_MODEL: ${{ vars.JUDGE_MODEL }}
+      JUDGE_MODEL_FALLBACK: ${{ vars.JUDGE_MODEL_FALLBACK }}
       EVAL_MODE: ${{ (github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && inputs.mode == 'smoke')) && 'smoke' || 'full' }}
     steps:
       - uses: actions/checkout@v4
