@@ -30,8 +30,13 @@ SECRET_PATTERNS = [
     re.compile(r"api[_-]?key\s*[:=]\s*['\"][^'\"\s]{8,}['\"]", re.I),
 ]
 FORBIDDEN_IMPORT = re.compile(
-    r"^\s*(?:from|import)\s+(?:langchain_google_genai|google\.generativeai)\b", re.M
+    r"^\s*(?:from\s+(?:langchain_google_genai|google\.generativeai|google\.genai)\b"
+    r"|from\s+google\s+import\s+(?:generativeai|genai)\b"
+    r"|import\s+(?:langchain_google_genai|google\.generativeai|google\.genai)\b)",
+    re.M,
 )
+GEMINI_ENDPOINT = "generativelanguage.googleapis.com"
+SCAN_EXEMPT = ("ci/checks.py", "tests/ci/")  # they contain the patterns as data
 TEXT_SUFFIXES = {".py", ".json", ".jsonl", ".md", ".toml", ".yml", ".yaml", ".txt", ".cfg", ".env"}
 
 
@@ -94,11 +99,15 @@ def scan_secrets(files: dict[str, str]) -> list[str]:
 
 
 def scan_imports(files: dict[str, str]) -> list[str]:
-    return [
-        f"{p}: imports a Gemini SDK; only src/llm.py may (CONTRACT.md section 6)"
-        for p, t in files.items()
-        if p.endswith(".py") and p != "src/llm.py" and FORBIDDEN_IMPORT.search(t)
-    ]
+    errs = []
+    for p, t in files.items():
+        if not p.endswith(".py") or p == "src/llm.py" or p.startswith(SCAN_EXEMPT):
+            continue
+        if FORBIDDEN_IMPORT.search(t):
+            errs.append(f"{p}: imports a Gemini SDK; only src/llm.py may (CONTRACT.md section 6)")
+        if GEMINI_ENDPOINT in t:
+            errs.append(f"{p}: calls a Gemini endpoint directly; only src/llm.py may")
+    return errs
 
 
 def env_tracked(paths: list[str]) -> list[str]:

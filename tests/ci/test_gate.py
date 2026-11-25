@@ -219,6 +219,9 @@ def test_secret_and_import_scanners():
     assert checks.scan_secrets({"a.py": "GEMINI_API_KEY="}) == []
     assert checks.scan_imports({"src/agent/x.py": "from langchain_google_genai import X"})
     assert checks.scan_imports({"src/llm.py": "from langchain_google_genai import X"}) == []
+    assert checks.scan_imports({"src/x.py": "from google import genai"})
+    assert checks.scan_imports({"src/x.py": "import google.genai as g"})
+    assert checks.scan_imports({"eval/x.py": 'U = "https://generativelanguage.googleapis.com/v1"'})
     assert checks.env_tracked([".env", ".env.example"]) == [".env: env file is tracked by git"]
 
 

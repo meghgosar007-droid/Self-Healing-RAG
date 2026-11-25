@@ -1,6 +1,6 @@
 name: ci
 
-# PRs: smoke eval. Pushes to main + nightly: full eval. Both are gated (CONTRACT.md section 5).
+# Smoke eval (18 questions) on PRs, pushes to main and nightly; full only by manual dispatch. Gated.
 on:
   pull_request:
   push:
@@ -70,7 +70,9 @@ jobs:
       CRITIC_MODEL_FALLBACK: ${{ vars.CRITIC_MODEL_FALLBACK }}
       JUDGE_MODEL: ${{ vars.JUDGE_MODEL }}
       JUDGE_MODEL_FALLBACK: ${{ vars.JUDGE_MODEL_FALLBACK }}
-      EVAL_MODE: ${{ (github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && inputs.mode == 'smoke')) && 'smoke' || 'full' }}
+      # Owner decision: smoke (18 questions) everywhere for now; full only via manual dispatch.
+      # CONTRACT s5 says main/nightly run full; reconcile via contract-change once a full baseline exists.
+      EVAL_MODE: ${{ (github.event_name == 'workflow_dispatch' && inputs.mode == 'full') && 'full' || 'smoke' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
