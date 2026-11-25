@@ -1,6 +1,6 @@
 {
   "meta": {
-    "contract_version": 2,
+    "contract_version": 3,
     "eval_mode": "smoke",
     "prompt_version": "agent-1.0.0",
     "judge_prompt_version": "judge-1.0.0",

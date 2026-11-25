@@ -11,7 +11,7 @@ from typing import Literal, TypedDict
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
-CONTRACT_VERSION = 2
+CONTRACT_VERSION = 3
 MAX_RETRIES = 2
 EMBEDDING_MODEL = "BAAI/bge-small-en-v1.5"
 
