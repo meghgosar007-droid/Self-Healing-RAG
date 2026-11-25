@@ -100,7 +100,7 @@ def test_corpus_version_mismatch_fails():
 
 def test_contract_version_mismatch_fails():
     r = passing()
-    r["meta"]["contract_version"] = 3
+    r["meta"]["contract_version"] = 99
     assert failed_rules(run(r)) == {"contract_version matches baseline"}
 
 
