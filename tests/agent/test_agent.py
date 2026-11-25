@@ -305,3 +305,88 @@ def test_agent_never_imports_gemini_sdk_or_judge_prompts():
         assert "langchain_google_genai" not in text, path
         assert "google.generativeai" not in text, path
         assert "eval.judge" not in text and "from eval" not in text, path
+
+
+# --- scope refusal (off-topic / creative requests) ----------------------------------------
+
+
+def test_out_of_scope_request_is_refused_before_retrieval(fake):
+    calls = []
+
+    def retrieve(q, k=5):
+        calls.append(q)
+        return [GRPO]
+
+    f = fake(happy_script(PLANNER=[{"in_scope": False, "sub_queries": []}]), retrieve)
+    s = graph.run("Write a poem about autumn.")
+    assert s["final_status"] == "refused"
+    assert s["answer"] == REFUSAL_TEXT
+    assert s["claims"] == [] and s["chunks"] == []
+    assert s["retry_count"] == 0 and s["sub_queries"] == []
+    assert calls == [] and f.tasks() == ["PLANNER"]
+
+
+def test_out_of_scope_ignores_leftover_sub_queries(fake):
+    f = fake(happy_script(PLANNER=[{"in_scope": False, "sub_queries": ["a b", "c d"]}]))
+    assert graph.run(Q)["final_status"] == "refused"
+    assert f.tasks() == ["PLANNER"]
+
+
+@pytest.mark.parametrize(
+    "reply", [{"in_scope": True}, {}, {"in_scope": "false"}, {"in_scope": None}]
+)
+def test_scope_check_fails_open(fake, reply):
+    fake(happy_script(PLANNER=[{**reply, "sub_queries": ["a b", "c d"]}]))
+    assert graph.run(Q)["final_status"] == "answered"
+
+
+def test_planner_prompt_asks_for_scope_and_generator_prompt_declines_non_facts():
+    from src.agent import prompts
+
+    assert "in_scope" in prompts.PLANNER
+    assert "creative writing" in prompts.GENERATOR
+
+
+# --- recall on retry (false refusals) ------------------------------------------------------
+
+
+def test_retry_widens_k_each_heal_loop(fake):
+    ks = []
+
+    def retrieve(q, k=5):
+        ks.append(k)
+        return [GRPO]
+
+    fake(happy_script(CLAIM_VERIFIER=[verdicts("unsupported")]), retrieve)
+    graph.run(Q)
+    # 2 sub-queries per attempt, 3 attempts (retry_count 0, 1, 2)
+    assert ks == [5, 5, 8, 8, 11, 11]
+
+
+def test_retry_with_better_queries_recovers_instead_of_refusing(fake):
+    """First queries miss the evidence, so the generator reports no information; the rewriter
+    gets that answer and its new queries find the right passage."""
+
+    def retrieve(query, k=5):
+        return [GRPO] if "precise" in query else [R1]
+
+    miss = "The context does not contain it."
+    f = fake(
+        happy_script(
+            PLANNER=[planner("broad topic", "general area")],
+            REWRITER=[planner("precise fact", "precise wording")],
+            GENERATOR=[miss, GOOD_ANSWER],
+            CLAIM_EXTRACTOR=[claims(), GOOD_CLAIMS],
+            CLAIM_VERIFIER=[verdicts("supported")],
+        ),
+        retrieve,
+    )
+    s = graph.run(Q)
+    assert s["final_status"] == "answered" and s["retry_count"] == 1
+    assert [c.id for c in s["chunks"]] == [GRPO.id]
+    rewriter_user = next(u for _, t, u in f.calls if t == "REWRITER")
+    assert miss in rewriter_user  # the rewriter sees what went wrong
+
+
+def test_prompt_version_bumped_for_this_change():
+    assert PROMPT_VERSION != "agent-1.0.0"

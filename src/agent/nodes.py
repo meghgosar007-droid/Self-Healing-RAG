@@ -16,6 +16,7 @@ from src.agent.prompts import (
 from src.schemas import MAX_RETRIES, Chunk, Claim, CriticVerdict
 
 K = retrieval.K_DEFAULT
+RETRY_K_STEP = 3  # each heal loop retrieves this many more chunks per query
 _STOP = frozenset("a an and are does do how in is of the to what which why".split())
 
 
@@ -46,13 +47,18 @@ def format_context(chunks: list[Chunk]) -> str:
 
 
 def planner(state: dict) -> dict:
+    """Scope check and query plan in one call. An out-of-scope request gets no sub-queries,
+    which routes straight to refuse. Anything unclear fails open (in scope)."""
     data = llm_utils.call_json("generator", PLANNER, f"Question: {state['question']}")
+    if data.get("in_scope") is False:
+        return {"sub_queries": []}
     return {"sub_queries": _clean_queries(data.get("sub_queries"), state["question"])}
 
 
 def retriever(payload: dict) -> dict:
     """One per sub-query (fan-out via Send). `idx` keeps merge order deterministic."""
-    return {"retrieved": [(payload["idx"], retrieval.retrieve(payload["query"], K))]}
+    k = payload.get("k", K)
+    return {"retrieved": [(payload["idx"], retrieval.retrieve(payload["query"], k))]}
 
 
 def merge(state: dict) -> dict:
@@ -132,6 +138,7 @@ def rewriter(state: dict) -> dict:
     user = (
         f"Question: {state['question']}\n"
         f"Previous queries: {state['sub_queries']}\n"
+        f"Previous answer: {state['answer']}\n"
         f"Unsupported claims: {v.unsupported_claims if v else []}\n"
         f"Critic reason: {v.reason if v else ''}"
     )

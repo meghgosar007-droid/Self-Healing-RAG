@@ -1,6 +1,6 @@
 """Self-healing graph and plain baseline (CONTRACT.md section 2).
 
-planner -> retriever x N (fan-out) -> merge (fan-in) -> generator -> critic
+planner -> (out of scope: refuse) retriever x N (fan-out) -> merge (fan-in) -> generator -> critic
 critic: pass -> answered | fail and retry_count < MAX_RETRIES -> rewriter -> retrievers
         | otherwise -> refuse
 """
@@ -37,8 +37,18 @@ class GraphState(TypedDict):
     retrieved: Annotated[list[tuple[int, list[Chunk]]], _collect]
 
 
-def _fan_out(state: dict) -> list[Send]:
-    return [Send("retriever", {"idx": i, "query": q}) for i, q in enumerate(state["sub_queries"])]
+def _fan_out(state: dict) -> list[Send] | str:
+    """One retriever per sub-query; no sub-queries (out of scope) means refuse.
+
+    Each retry widens retrieval: k grows by RETRY_K_STEP per heal loop.
+    """
+    if not state["sub_queries"]:
+        return "refuse"
+    k = nodes.K + nodes.RETRY_K_STEP * state["retry_count"]
+    return [
+        Send("retriever", {"idx": i, "query": q, "k": k})
+        for i, q in enumerate(state["sub_queries"])
+    ]
 
 
 @lru_cache(maxsize=1)
@@ -53,7 +63,7 @@ def build_graph() -> Any:
     g.add_node("refuse", nodes.refuse)
 
     g.add_edge(START, "planner")
-    g.add_conditional_edges("planner", _fan_out, ["retriever"])
+    g.add_conditional_edges("planner", _fan_out, ["retriever", "refuse"])
     g.add_edge("retriever", "merge")
     g.add_conditional_edges("merge", nodes.route_after_merge, ["generator", "refuse"])
     g.add_edge("generator", "critic")
