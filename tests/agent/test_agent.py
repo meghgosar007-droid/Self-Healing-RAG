@@ -227,12 +227,6 @@ def test_json_in_code_fence_and_one_retry_on_garbage(fake):
     assert f.tasks().count("PLANNER") == 2
 
 
-def test_persistent_garbage_raises(fake):
-    fake(happy_script(PLANNER=["nope"]))
-    with pytest.raises(ValueError):
-        graph.run(Q)
-
-
 # --- plain baseline -----------------------------------------------------------------------
 
 
@@ -390,3 +384,99 @@ def test_retry_with_better_queries_recovers_instead_of_refusing(fake):
 
 def test_prompt_version_bumped_for_this_change():
     assert PROMPT_VERSION != "agent-1.0.0"
+
+
+# --- malformed JSON never crashes the graph -------------------------------------------------
+
+# The real failure seen live: JSONDecodeError "Expecting ',' delimiter".
+BAD = '{"sub_queries": ["a b" "c d"]}'
+
+
+def test_parse_json_raises_value_error_on_malformed():
+    from src.agent import llm_utils
+
+    for text in (BAD, "nope", "[1, 2]", '{"a": 1,', ""):
+        with pytest.raises(ValueError):
+            llm_utils.parse_json(text)
+
+
+def test_call_json_retries_once_then_returns_none(fake):
+    from src.agent import llm_utils
+
+    f = fake(happy_script(PLANNER=[BAD]))
+    assert llm_utils.call_json("generator", "TASK: PLANNER", "q") is None
+    assert f.tasks() == ["PLANNER", "PLANNER"]
+
+
+def test_planner_malformed_twice_fails_open(fake):
+    f = fake(happy_script(PLANNER=[BAD]))
+    s = graph.run(Q)
+    assert s["final_status"] == "answered"  # in scope, queries built from the question
+    assert 2 <= len(s["sub_queries"]) <= 3 and s["sub_queries"][0] == Q
+    assert f.tasks().count("PLANNER") == 2
+
+
+def test_planner_malformed_once_uses_the_retry(fake):
+    f = fake(happy_script(PLANNER=[BAD, planner("a b", "c d")]))
+    assert graph.run(Q)["sub_queries"] == ["a b", "c d"]
+    assert f.tasks().count("PLANNER") == 2
+
+
+def test_extractor_malformed_twice_fails_closed_and_refuses_at_cap(fake):
+    f = fake(happy_script(CLAIM_EXTRACTOR=[BAD]))
+    s = graph.run(Q)
+    assert s["final_status"] == "refused" and s["claims"] == []
+    assert s["retry_count"] == MAX_RETRIES
+    assert "could not be parsed" in s["critic_verdict"].reason
+    assert "CLAIM_VERIFIER" not in f.tasks()  # nothing to verify
+
+
+def test_extractor_malformed_once_recovers_via_retry_call(fake):
+    f = fake(happy_script(CLAIM_EXTRACTOR=[BAD, GOOD_CLAIMS]))
+    s = graph.run(Q)
+    assert s["final_status"] == "answered" and s["retry_count"] == 0
+    assert f.tasks().count("CLAIM_EXTRACTOR") == 2
+
+
+def test_verifier_malformed_twice_marks_every_claim_unsupported(fake):
+    f = fake(happy_script(CLAIM_VERIFIER=[BAD]))
+    s = graph.run(Q)
+    assert s["final_status"] == "refused" and s["claims"] == []
+    assert s["critic_verdict"].verdict == "fail"
+    assert s["critic_verdict"].unsupported_claims == [GOOD_CLAIMS["claims"][0]["text"]]
+    assert "could not be parsed" in s["critic_verdict"].reason
+    assert f.tasks().count("CLAIM_VERIFIER") == 2 * (MAX_RETRIES + 1)
+
+
+def test_verifier_malformed_once_recovers(fake):
+    fake(happy_script(CLAIM_VERIFIER=[BAD, verdicts("supported")]))
+    s = graph.run(Q)
+    assert s["final_status"] == "answered" and s["retry_count"] == 0
+
+
+def test_rewriter_malformed_twice_falls_back_to_question_queries(fake):
+    f = fake(
+        happy_script(
+            REWRITER=[BAD],
+            CLAIM_VERIFIER=[verdicts("unsupported"), verdicts("supported")],
+        )
+    )
+    s = graph.run(Q)
+    assert s["final_status"] == "answered" and s["retry_count"] == 1
+    assert s["sub_queries"][0] == Q and 2 <= len(s["sub_queries"]) <= 3
+    assert f.tasks().count("REWRITER") == 2
+
+
+@pytest.mark.parametrize(
+    "task, reply",
+    [
+        ("PLANNER", {"in_scope": True, "sub_queries": "not a list"}),
+        ("CLAIM_EXTRACTOR", {"claims": "not a list"}),
+        ("CLAIM_EXTRACTOR", {"claims": [{"text": "x", "chunk_ids": "not a list"}]}),
+        ("CLAIM_VERIFIER", {"verdicts": {"0": "supported"}}),
+        ("CLAIM_VERIFIER", {"verdicts": "supported"}),
+    ],
+)
+def test_valid_json_with_wrong_shape_never_raises(fake, task, reply):
+    fake(happy_script(**{task: [reply]}))
+    assert graph.run(Q)["final_status"] in ("answered", "refused")

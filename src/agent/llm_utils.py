@@ -3,12 +3,15 @@
 from __future__ import annotations
 
 import json
+import logging
 import re
 from typing import Any
 
 from langchain_core.messages import HumanMessage, SystemMessage
 
 from src import llm
+
+log = logging.getLogger(__name__)
 
 
 def _text(content: Any) -> str:
@@ -33,17 +36,19 @@ def parse_json(text: str) -> dict[str, Any]:
         start, end = text.find("{"), text.rfind("}")
         if start < 0 or end <= start:
             raise ValueError(f"no JSON object in model output: {text[:200]!r}") from None
-        value = json.loads(text[start : end + 1])
+        value = json.loads(text[start : end + 1])  # JSONDecodeError is a ValueError
     if not isinstance(value, dict):
         raise ValueError("model output JSON is not an object")
     return value
 
 
-def call_json(role: str, system: str, user: str) -> dict[str, Any]:
-    """Call and parse JSON; one retry with a reminder if the output is not valid JSON."""
-    try:
-        return parse_json(call(role, system, user))
-    except ValueError:
-        return parse_json(
-            call(role, system, user + "\n\nReply with a single valid JSON object only.")
-        )
+def call_json(role: str, system: str, user: str) -> dict[str, Any] | None:
+    """Call and parse JSON. On malformed output, retry once with a reminder; if that also
+    fails return None so the caller can use its safe default. Never raises on bad JSON."""
+    reminder = "\n\n" + "Reply with a single valid JSON object only."
+    for attempt, suffix in enumerate(("", reminder)):
+        try:
+            return parse_json(call(role, system, user + suffix))
+        except ValueError:
+            log.warning("llm role=%s: malformed JSON from model (attempt %d/2)", role, attempt + 1)
+    return None
