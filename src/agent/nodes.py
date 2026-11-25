@@ -50,6 +50,7 @@ def planner(state: dict) -> dict:
     """Scope check and query plan in one call. An out-of-scope request gets no sub-queries,
     which routes straight to refuse. Anything unclear fails open (in scope)."""
     data = llm_utils.call_json("generator", PLANNER, f"Question: {state['question']}")
+    data = data or {}  # unparseable plan: fail open, and queries are built from the question
     if data.get("in_scope") is False:
         return {"sub_queries": []}
     return {"sub_queries": _clean_queries(data.get("sub_queries"), state["question"])}
@@ -83,17 +84,22 @@ def generator(state: dict) -> dict:
     return {"answer": generate_answer(state["question"], state["chunks"])}
 
 
-def extract_claims(answer: str, chunks: list[Chunk]) -> list[Claim]:
+def extract_claims(answer: str, chunks: list[Chunk]) -> list[Claim] | None:
+    """None means the model output could not be parsed (distinct from no claims)."""
     known = {c.id for c in chunks}
     data = llm_utils.call_json("critic", CLAIM_EXTRACTOR, f"Answer:\n{answer}")
+    if data is None:
+        return None
+    raw = data.get("claims")
     claims: list[Claim] = []
-    for item in data.get("claims") or []:
+    for item in raw if isinstance(raw, list) else []:
         if not isinstance(item, dict):
             continue
         text = " ".join(str(item.get("text", "")).split())
         if not text:
             continue
-        ids = [str(i).strip("[] ") for i in item.get("chunk_ids") or []]
+        raw_ids = item.get("chunk_ids")
+        ids = [str(i).strip("[] ") for i in (raw_ids if isinstance(raw_ids, list) else [])]
         claims.append(Claim(text=text, chunk_ids=[i for i in dict.fromkeys(ids) if i in known]))
     return claims
 
@@ -106,8 +112,15 @@ def verify_claims(claims: list[Claim], chunks: list[Chunk]) -> CriticVerdict:
     listing = "\n".join(f"{i}. {c.text}" for i, c in enumerate(claims))
     user = f"Context passages:\n\n{format_context(chunks)}\n\nClaims:\n{listing}"
     data = llm_utils.call_json("critic", CLAIM_VERIFIER, user)
+    if data is None:  # unparseable verification: nothing is confirmed, so fail closed
+        return CriticVerdict(
+            verdict="fail",
+            unsupported_claims=[c.text for c in claims],
+            reason="The critic's verification output could not be parsed.",
+        )
     labels: dict[int, str] = {}
-    for v in data.get("verdicts") or []:
+    raw = data.get("verdicts")
+    for v in raw if isinstance(raw, list) else []:
         if isinstance(v, dict) and isinstance(v.get("index"), int):
             labels[v["index"]] = str(v.get("verdict", "")).lower()
     # A claim the critic did not explicitly mark supported counts against the answer.
@@ -126,6 +139,13 @@ def verify_claims(claims: list[Claim], chunks: list[Chunk]) -> CriticVerdict:
 
 def critic(state: dict) -> dict:
     claims = extract_claims(state["answer"], state["chunks"])
+    if claims is None:  # unparseable extraction: cannot verify, so fail closed
+        verdict = CriticVerdict(
+            verdict="fail",
+            unsupported_claims=[],
+            reason="The critic's claim extraction output could not be parsed.",
+        )
+        return {"claims": [], "critic_verdict": verdict}
     verdict = verify_claims(claims, state["chunks"])
     update: dict[str, Any] = {"claims": claims, "critic_verdict": verdict}
     if verdict.verdict == "pass":
@@ -142,7 +162,7 @@ def rewriter(state: dict) -> dict:
         f"Unsupported claims: {v.unsupported_claims if v else []}\n"
         f"Critic reason: {v.reason if v else ''}"
     )
-    data = llm_utils.call_json("generator", REWRITER, user)
+    data = llm_utils.call_json("generator", REWRITER, user) or {}  # fallback: from the question
     return {
         "sub_queries": _clean_queries(data.get("sub_queries"), state["question"]),
         "retry_count": state["retry_count"] + 1,
