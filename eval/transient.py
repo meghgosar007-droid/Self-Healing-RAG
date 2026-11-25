@@ -17,6 +17,11 @@ T = TypeVar("T")
 
 ATTEMPTS = 3
 BACKOFF_S = 5.0
+# Provider overload that src/llm.py has already retried and given up on (503 "high demand",
+# 429 quota). Spikes clear in minutes, so wait longer and try more times than for a dropped socket.
+OVERLOAD_ATTEMPTS = 5
+OVERLOAD_BACKOFF_S = 60.0
+_OVERLOAD_MARKERS = ("503", "UNAVAILABLE", "429", "RESOURCE_EXHAUSTED")
 _TRANSIENT_NAMES = {
     "RemoteProtocolError",
     "ReadError",
@@ -43,6 +48,18 @@ def is_transient(exc: BaseException) -> bool:
     return False
 
 
+def is_overload(exc: BaseException) -> bool:
+    """True if the exception, or anything it was raised from, reports provider overload."""
+    seen: set[int] = set()
+    while exc is not None and id(exc) not in seen:
+        seen.add(id(exc))
+        text = str(exc)
+        if any(m in text for m in _OVERLOAD_MARKERS):
+            return True
+        exc = exc.__cause__ or exc.__context__  # type: ignore[assignment]
+    return False
+
+
 def with_retry(
     fn: Callable[[], T],
     *,
@@ -51,12 +68,19 @@ def with_retry(
     sleep: Callable[[float], None] = time.sleep,
     what: str = "call",
 ) -> T:
-    for attempt in range(1, attempts + 1):
+    attempt = 0
+    while True:
+        attempt += 1
         try:
             return fn()
         except Exception as exc:
-            if attempt == attempts or not is_transient(exc):
+            overload = is_overload(exc)
+            limit = max(attempts, OVERLOAD_ATTEMPTS) if overload else attempts
+            if attempt >= limit or not (overload or is_transient(exc)):
                 raise
-            log.warning("%s: transient %r (attempt %d/%d), retrying", what, exc, attempt, attempts)
-            sleep((BACKOFF_S if backoff_s is None else backoff_s) * attempt)
-    raise AssertionError("unreachable")
+            base = OVERLOAD_BACKOFF_S if overload else BACKOFF_S
+            wait = (base if backoff_s is None else backoff_s) * attempt
+            log.warning(
+                "%s: %r (attempt %d/%d), retrying in %.0fs", what, exc, attempt, limit, wait
+            )
+            sleep(wait)

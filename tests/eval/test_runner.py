@@ -287,6 +287,7 @@ def no_backoff(monkeypatch):
     from eval import transient
 
     monkeypatch.setattr(transient, "BACKOFF_S", 0)
+    monkeypatch.setattr(transient, "OVERLOAD_BACKOFF_S", 0)
 
 
 def flaky(real, failures, exc):
@@ -349,3 +350,23 @@ def test_judge_retries_dropped_connections(no_backoff):
     judge = Judge(flaky_llm, NullCache(), model_name=lambda: "judge-m")
     result = go(questions=qs()[:1], judge=judge)
     assert len(result.results) == 2
+
+
+class GoogleAPIError(Exception):  # same class name langchain raises
+    pass
+
+
+def test_agent_survives_provider_overload_then_succeeds(no_backoff):
+    base = fakes.fake_agents({})
+    exc = GoogleAPIError("503 UNAVAILABLE. This model is currently experiencing high demand.")
+    agent, state = flaky(base["self_healing"], 4, exc)
+    result = go(questions=qs()[:1], agents={"plain": base["plain"], "self_healing": agent})
+    assert state["left"] == 0 and len(result.results) == 2
+
+
+def test_overload_gives_up_after_five_attempts(no_backoff):
+    base = fakes.fake_agents({})
+    agent, state = flaky(base["self_healing"], 99, GoogleAPIError("503 UNAVAILABLE"))
+    with pytest.raises(runner.EvalError):
+        go(questions=qs()[:1], agents={"plain": base["plain"], "self_healing": agent})
+    assert state["left"] == 99 - 5
