@@ -72,7 +72,7 @@ def test_full_run_validates_against_schema_and_scores_both_systems():
 def test_meta_records_modes_versions_and_models():
     result = go(mode="smoke")
     m = result.meta
-    assert (m.eval_mode, m.contract_version, m.prompt_version) == ("smoke", 2, "agent-test")
+    assert (m.eval_mode, m.contract_version, m.prompt_version) == ("smoke", 3, "agent-test")
     assert m.judge_prompt_version.startswith("judge-")
     assert (m.generator_model, m.critic_model, m.judge_model) == ("gen-m", "critic-m", "judge-m")
     assert (m.corpus_version, m.git_sha) == ("a1b2c3d4e5f6", "deadbeef")

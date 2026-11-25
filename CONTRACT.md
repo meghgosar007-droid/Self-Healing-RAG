@@ -1,4 +1,4 @@
-# CONTRACT.md  (contract_version: 2)
+# CONTRACT.md  (contract_version: 3)
 
 Single source of truth for all tracks. Code that disagrees with this file is wrong.
 Corpus: DeepSeek-R1, DeepSeekMath, Dr. GRPO papers. Source PDFs are supplied by the repo owner in `data/papers/`; nothing is downloaded by code.
@@ -27,7 +27,7 @@ Emitted by ingestion as `data/chunks.jsonl` (one JSON object per line). Pydantic
 | key | type | notes |
 |---|---|---|
 | question | str | input, never mutated |
-| sub_queries | list[str] | 2-3 retrieval queries (one parallel retriever each); rewritten on retry |
+| sub_queries | list[str] | 2-3 retrieval queries (one parallel retriever each); rewritten on retry. Empty only when the planner refuses an out-of-scope request |
 | chunks | list[Chunk] | retrieved for the current attempt (replaced, not appended, on retry) |
 | answer | str \| None | generator output; every sentence cites chunk ids like `[id]` |
 | claims | list[Claim] | `Claim = {text: str, chunk_ids: list[str]}` extracted from the answer |
@@ -35,7 +35,7 @@ Emitted by ingestion as `data/chunks.jsonl` (one JSON object per line). Pydantic
 | retry_count | int | starts 0; +1 per heal loop; `MAX_RETRIES = 2` |
 | final_status | `"answered"` \| `"refused"` \| None | None until terminal |
 
-Self-healing flow (nodes: planner, retrievers, merge, generator, critic, rewriter, refuse): planner -> parallel retrievers (one per sub-query, LangGraph fan-out) -> merge (fan-in, dedupe chunks by id) -> generator -> critic. The critic node extracts the claims and checks each against the chunks. `pass` -> answered. `fail` and `retry_count < MAX_RETRIES` -> rewriter produces new sub_queries, retry_count += 1, and the graph fans out to all retrievers again. Otherwise -> refused. Also refused straight from merge when retrieval returns nothing relevant. Refusal text is a fixed string; refusals contain no claims.
+Self-healing flow (nodes: planner, retrievers, merge, generator, critic, rewriter, refuse): planner -> parallel retrievers (one per sub-query, LangGraph fan-out) -> merge (fan-in, dedupe chunks by id) -> generator -> critic. The critic node extracts the claims and checks each against the chunks. `pass` -> answered. `fail` and `retry_count < MAX_RETRIES` -> rewriter produces new sub_queries, retry_count += 1, and the graph fans out to all retrievers again. Otherwise -> refused. Also refused straight from merge when retrieval returns nothing relevant, and straight from the planner when the request is out of scope (not an information request about the papers or related research, e.g. creative writing, code, chit-chat, unrelated topics): the planner then returns no sub_queries, nothing is retrieved, and `chunks` stays empty. The planner's scope check fails open: if unclear, the request is treated as in scope. Refusal text is a fixed string; refusals contain no claims.
 
 Plain baseline flow (for comparison only): one `retrieve(question, k)` -> generator. No planner, critic, or retry; it never refuses on its own except when retrieval returns nothing relevant. It shares the retriever, the generator prompt and the generator model with the self-healing system, so the comparison is fair.
 
@@ -51,7 +51,7 @@ Runner modes: `--mode smoke` runs only `smoke: true` rows; `--mode full` runs ev
 ```json
 {
   "meta": {
-    "contract_version": 2,
+    "contract_version": 3,
     "eval_mode": "smoke|full",
     "prompt_version": "agent-1.0.0",
     "judge_prompt_version": "judge-1.0.0",
