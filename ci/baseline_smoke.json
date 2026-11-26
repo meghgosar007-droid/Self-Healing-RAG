@@ -1,0 +1,1213 @@
+{
+  "meta": {
+    "contract_version": 3,
+    "eval_mode": "smoke",
+    "prompt_version": "agent-1.1.0",
+    "judge_prompt_version": "judge-1.0.0",
+    "corpus_version": "cbf2cc00e93d",
+    "generator_model": "gemini-3.5-flash-lite",
+    "critic_model": "gemini-3.5-flash-lite",
+    "judge_model": "gemini-flash-lite-latest",
+    "git_sha": "eda32df113b53f6e9647d7a9ca78fdc8730275c4",
+    "timestamp": "2026-11-25T15:07:49+00:00"
+  },
+  "results": [
+    {
+      "id": "q001",
+      "system": "plain",
+      "question": "How does GRPO avoid needing a separate value model?",
+      "answerable": true,
+      "final_status": "answered",
+      "answer": "GRPO avoids needing an additional value function approximation by using the average reward of multiple sampled outputs, produced in response to the same question, as the baseline [deepseek-math:4-1-1-from-ppo-to-grpo:p13:1].",
+      "retry_count": 0,
+      "retrieved_chunk_ids": [
+        "dr-grpo:3-2-dr-grpo-group-relative-policy-optimization-done-right:p6:0",
+        "dr-grpo:1-introduction:p2:3",
+        "deepseek-math:4-1-1-from-ppo-to-grpo:p13:1",
+        "dr-grpo:abstract:p1:1",
+        "dr-grpo:3-1-grpo-leads-to-biased-optimization:p6:0"
+      ],
+      "claims": [
+        {
+          "text": "GRPO avoids needing an additional value function approximation by using the average reward of multiple sampled outputs, produced in response to the same question, as the baseline",
+          "chunk_ids": [
+            "deepseek-math:4-1-1-from-ppo-to-grpo:p13:1"
+          ],
+          "verdict": "supported"
+        }
+      ],
+      "outcome": "answered_ok",
+      "latency_ms": 14139,
+      "llm_wait_ms": 0,
+      "tokens_in": 1876,
+      "tokens_out": 57
+    },
+    {
+      "id": "q002",
+      "system": "plain",
+      "question": "What learning rate and KL coefficient were used to train DeepSeek-R1-Zero?",
+      "answerable": true,
+      "final_status": "answered",
+      "answer": "To train DeepSeek-R1-Zero, the learning rate was set to 3e-6 and the KL coefficient was set to 0.001 [deepseek-r1:2-1-group-relative-policy-optimization:p3:0].",
+      "retry_count": 0,
+      "retrieved_chunk_ids": [
+        "deepseek-r1:2-1-group-relative-policy-optimization:p3:0",
+        "deepseek-r1:b-4-1-hyper-parameters-of-deepseek-r1-zero-qwen-32b:p34:0",
+        "deepseek-r1:2-3-incentivize-reasoning-capability-in-llms:p4:0",
+        "deepseek-r1:2-2-reward-design:p3:0",
+        "deepseek-r1:c-1-evolution-of-reasoning-capability-in-deepseek-r1-zero-du:p37:0"
+      ],
+      "claims": [
+        {
+          "text": "The learning rate to train DeepSeek-R1-Zero was set to 3e-6.",
+          "chunk_ids": [
+            "deepseek-r1:2-1-group-relative-policy-optimization:p3:0"
+          ],
+          "verdict": "supported"
+        },
+        {
+          "text": "The KL coefficient to train DeepSeek-R1-Zero was set to 0.001.",
+          "chunk_ids": [
+            "deepseek-r1:2-1-group-relative-policy-optimization:p3:0"
+          ],
+          "verdict": "supported"
+        }
+      ],
+      "outcome": "answered_ok",
+      "latency_ms": 1655,
+      "llm_wait_ms": 0,
+      "tokens_in": 1547,
+      "tokens_out": 58
+    },
+    {
+      "id": "q003",
+      "system": "plain",
+      "question": "How many math tokens are in the DeepSeekMath Corpus and where do they come from?",
+      "answerable": true,
+      "final_status": "answered",
+      "answer": "The DeepSeekMath Corpus comprises 120 billion math tokens, which are extracted from the Common Crawl using a fastText-based classifier [deepseek-math:1-introduction:p2:1, deepseek-math:2-1-data-collection-and-decontamination:p4:0].",
+      "retry_count": 0,
+      "retrieved_chunk_ids": [
+        "deepseek-math:2-2-validating-the-quality-of-the-deepseekmath-corpus:p6:0",
+        "deepseek-math:1-introduction:p2:1",
+        "deepseek-math:2-1-data-collection-and-decontamination:p4:0",
+        "deepseek-math:2-2-2-evaluation-results:p6:0",
+        "deepseek-math:2-3-training-and-evaluating-deepseekmath-base-7b:p7:0"
+      ],
+      "claims": [
+        {
+          "text": "The DeepSeekMath Corpus comprises 120 billion math tokens.",
+          "chunk_ids": [
+            "deepseek-math:1-introduction:p2:1",
+            "deepseek-math:2-1-data-collection-and-decontamination:p4:0"
+          ],
+          "verdict": "supported"
+        },
+        {
+          "text": "The math tokens in the DeepSeekMath Corpus are extracted from the Common Crawl using a fastText-based classifier.",
+          "chunk_ids": [
+            "deepseek-math:1-introduction:p2:1",
+            "deepseek-math:2-1-data-collection-and-decontamination:p4:0"
+          ],
+          "verdict": "supported"
+        }
+      ],
+      "outcome": "answered_ok",
+      "latency_ms": 2758,
+      "llm_wait_ms": 0,
+      "tokens_in": 1333,
+      "tokens_out": 67
+    },
+    {
+      "id": "q004",
+      "system": "plain",
+      "question": "What accuracy did DeepSeekMath 7B reach on the MATH benchmark?",
+      "answerable": true,
+      "final_status": "answered",
+      "answer": "Under the evaluation setting allowing natural language reasoning and program-based tool use, DeepSeekMath-Instruct 7B approaches an accuracy of 60% on the MATH benchmark [deepseek-math:3-2-training-and-evaluating-deepseekmath-instruct-7b:p11:2]. Additionally, DeepSeekMath-Base 7B achieves an accuracy of 36.2% on the MATH benchmark when evaluated with chain-of-thought prompting [deepseek-math:2-3-training-and-evaluating-deepseekmath-base-7b:p8:3].",
+      "retry_count": 0,
+      "retrieved_chunk_ids": [
+        "deepseek-math:3-2-training-and-evaluating-deepseekmath-instruct-7b:p11:2",
+        "deepseek-math:2-3-training-and-evaluating-deepseekmath-base-7b:p8:2",
+        "deepseek-math:2-3-training-and-evaluating-deepseekmath-base-7b:p8:3",
+        "deepseek-math:2-3-training-and-evaluating-deepseekmath-base-7b:p8:0",
+        "deepseek-math:2-3-training-and-evaluating-deepseekmath-base-7b:p10:0"
+      ],
+      "claims": [
+        {
+          "text": "Under the evaluation setting allowing natural language reasoning and program-based tool use, DeepSeekMath-Instruct 7B approaches an accuracy of 60% on the MATH benchmark.",
+          "chunk_ids": [
+            "deepseek-math:3-2-training-and-evaluating-deepseekmath-instruct-7b:p11:2"
+          ],
+          "verdict": "supported"
+        },
+        {
+          "text": "DeepSeekMath-Base 7B achieves an accuracy of 36.2% on the MATH benchmark when evaluated with chain-of-thought prompting.",
+          "chunk_ids": [
+            "deepseek-math:2-3-training-and-evaluating-deepseekmath-base-7b:p8:3"
+          ],
+          "verdict": "supported"
+        }
+      ],
+      "outcome": "answered_ok",
+      "latency_ms": 2388,
+      "llm_wait_ms": 0,
+      "tokens_in": 1512,
+      "tokens_out": 131
+    },
+    {
+      "id": "q005",
+      "system": "plain",
+      "question": "What two biases does Dr. GRPO identify in GRPO?",
+      "answerable": true,
+      "final_status": "answered",
+      "answer": "Dr. GRPO identifies the response-level length bias and standard deviation normalization bias in GRPO [dr-grpo:c-extended-empirical-results:p15:0, dr-grpo:3-1-grpo-leads-to-biased-optimization:p6:1, dr-grpo:3-1-grpo-leads-to-biased-optimization:p6:0].",
+      "retry_count": 0,
+      "retrieved_chunk_ids": [
+        "dr-grpo:c-extended-empirical-results:p15:0",
+        "dr-grpo:c-extended-empirical-results:p14:0",
+        "dr-grpo:c-extended-empirical-results:p15:1",
+        "dr-grpo:3-1-grpo-leads-to-biased-optimization:p6:1",
+        "dr-grpo:3-1-grpo-leads-to-biased-optimization:p6:0"
+      ],
+      "claims": [
+        {
+          "text": "Dr. GRPO identifies the response-level length bias in GRPO.",
+          "chunk_ids": [
+            "dr-grpo:c-extended-empirical-results:p15:0",
+            "dr-grpo:3-1-grpo-leads-to-biased-optimization:p6:1",
+            "dr-grpo:3-1-grpo-leads-to-biased-optimization:p6:0"
+          ],
+          "verdict": "unsupported"
+        },
+        {
+          "text": "Dr. GRPO identifies the standard deviation normalization bias in GRPO.",
+          "chunk_ids": [
+            "dr-grpo:c-extended-empirical-results:p15:0",
+            "dr-grpo:3-1-grpo-leads-to-biased-optimization:p6:1",
+            "dr-grpo:3-1-grpo-leads-to-biased-optimization:p6:0"
+          ],
+          "verdict": "unsupported"
+        }
+      ],
+      "outcome": "hallucinated",
+      "latency_ms": 4313,
+      "llm_wait_ms": 2136,
+      "tokens_in": 1457,
+      "tokens_out": 89
+    },
+    {
+      "id": "q006",
+      "system": "plain",
+      "question": "What AIME 2024 accuracy does the minimalist R1-Zero recipe in the Dr. GRPO paper achieve, and with what base model size?",
+      "answerable": true,
+      "final_status": "answered",
+      "answer": "The context does not contain it.",
+      "retry_count": 0,
+      "retrieved_chunk_ids": [
+        "dr-grpo:1-introduction:p2:1",
+        "dr-grpo:abstract:p1:1",
+        "deepseek-r1:2-1-group-relative-policy-optimization:p3:0",
+        "dr-grpo:4-closing-remarks:p9:0",
+        "dr-grpo:1-introduction:p2:3"
+      ],
+      "claims": [],
+      "outcome": "answered_ok",
+      "latency_ms": 1800,
+      "llm_wait_ms": 0,
+      "tokens_in": 1480,
+      "tokens_out": 7
+    },
+    {
+      "id": "q007",
+      "system": "plain",
+      "question": "What was the total estimated training cost of DeepSeek-R1 and what GPU rental price was assumed?",
+      "answerable": true,
+      "final_status": "answered",
+      "answer": "The total estimated training cost for DeepSeek-R1 (including DeepSeek-R1-Zero, SFT data creation, and DeepSeek-R1) is $294K (or 147K H800 GPU hours), assuming an H800 rental price of $2 per GPU hour [deepseek-r1:b-6-ablation-study-of-language-consistency-reward:p35:0].",
+      "retry_count": 0,
+      "retrieved_chunk_ids": [
+        "deepseek-r1:b-4-4-training-cost:p35:0",
+        "deepseek-r1:b-6-ablation-study-of-language-consistency-reward:p35:0",
+        "deepseek-r1:b-4-1-hyper-parameters-of-deepseek-r1-zero-qwen-32b:p34:0",
+        "deepseek-r1:2-1-group-relative-policy-optimization:p3:0",
+        "deepseek-r1:d-2-main-results:p41:2"
+      ],
+      "claims": [
+        {
+          "text": "The total estimated training cost for DeepSeek-R1, including DeepSeek-R1-Zero, SFT data creation, and DeepSeek-R1, is $294K.",
+          "chunk_ids": [
+            "deepseek-r1:b-6-ablation-study-of-language-consistency-reward:p35:0"
+          ],
+          "verdict": "supported"
+        },
+        {
+          "text": "The total estimated training time for DeepSeek-R1 is 147K H800 GPU hours.",
+          "chunk_ids": [
+            "deepseek-r1:b-6-ablation-study-of-language-consistency-reward:p35:0"
+          ],
+          "verdict": "supported"
+        },
+        {
+          "text": "The assumed H800 rental price for the DeepSeek-R1 training cost estimate is $2 per GPU hour.",
+          "chunk_ids": [
+            "deepseek-r1:b-6-ablation-study-of-language-consistency-reward:p35:0"
+          ],
+          "verdict": "supported"
+        }
+      ],
+      "outcome": "answered_ok",
+      "latency_ms": 2083,
+      "llm_wait_ms": 0,
+      "tokens_in": 1510,
+      "tokens_out": 97
+    },
+    {
+      "id": "q008",
+      "system": "plain",
+      "question": "What kinds of rule-based rewards does DeepSeek-R1-Zero use?",
+      "answerable": true,
+      "final_status": "answered",
+      "answer": "DeepSeek-R1-Zero uses accuracy rewards and format rewards in its rule-based reward system [deepseek-r1:2-2-reward-design:p3:0].",
+      "retry_count": 0,
+      "retrieved_chunk_ids": [
+        "deepseek-r1:2-2-reward-design:p3:0",
+        "deepseek-r1:2-3-incentivize-reasoning-capability-in-llms:p5:3",
+        "deepseek-r1:2-3-incentivize-reasoning-capability-in-llms:p4:0",
+        "dr-grpo:abstract:p1:0",
+        "deepseek-r1:6-conclusion-limitation-and-future-work:p11:1"
+      ],
+      "claims": [
+        {
+          "text": "DeepSeek-R1-Zero uses accuracy rewards in its rule-based reward system.",
+          "chunk_ids": [
+            "deepseek-r1:2-2-reward-design:p3:0"
+          ],
+          "verdict": "supported"
+        },
+        {
+          "text": "DeepSeek-R1-Zero uses format rewards in its rule-based reward system.",
+          "chunk_ids": [
+            "deepseek-r1:2-2-reward-design:p3:0"
+          ],
+          "verdict": "supported"
+        }
+      ],
+      "outcome": "answered_ok",
+      "latency_ms": 2097,
+      "llm_wait_ms": 0,
+      "tokens_in": 1566,
+      "tokens_out": 40
+    },
+    {
+      "id": "q009",
+      "system": "plain",
+      "question": "Does training on arXiv papers help mathematical reasoning according to DeepSeekMath?",
+      "answerable": true,
+      "final_status": "answered",
+      "answer": "According to DeepSeekMath, training on arXiv papers brings no notable improvements across various mathematical benchmarks and seems ineffective in improving mathematical reasoning [deepseek-math:5-1-2-arxiv-papers-seem-ineffective-in-improving-mathematica:p18:0, deepseek-math:1-1-contributions:p3:1].",
+      "retry_count": 0,
+      "retrieved_chunk_ids": [
+        "deepseek-math:5-1-2-arxiv-papers-seem-ineffective-in-improving-mathematica:p18:0",
+        "deepseek-math:5-1-2-arxiv-papers-seem-ineffective-in-improving-mathematica:p17:0",
+        "deepseek-math:1-1-contributions:p3:1",
+        "deepseek-math:1-introduction:p2:3",
+        "deepseek-math:5-1-1-code-training-benefits-mathematical-reasoning:p16:0"
+      ],
+      "claims": [
+        {
+          "text": "According to DeepSeekMath, training on arXiv papers brings no notable improvements across various mathematical benchmarks.",
+          "chunk_ids": [
+            "deepseek-math:5-1-2-arxiv-papers-seem-ineffective-in-improving-mathematica:p18:0",
+            "deepseek-math:1-1-contributions:p3:1"
+          ],
+          "verdict": "supported"
+        },
+        {
+          "text": "According to DeepSeekMath, training on arXiv papers seems ineffective in improving mathematical reasoning.",
+          "chunk_ids": [
+            "deepseek-math:5-1-2-arxiv-papers-seem-ineffective-in-improving-mathematica:p18:0",
+            "deepseek-math:1-1-contributions:p3:1"
+          ],
+          "verdict": "supported"
+        }
+      ],
+      "outcome": "answered_ok",
+      "latency_ms": 1814,
+      "llm_wait_ms": 0,
+      "tokens_in": 1468,
+      "tokens_out": 78
+    },
+    {
+      "id": "q010",
+      "system": "plain",
+      "question": "Why did DeepSeek-R1 add a language consistency reward and how is it computed?",
+      "answerable": true,
+      "final_status": "answered",
+      "answer": "The context does not contain how the language consistency reward is computed.",
+      "retry_count": 0,
+      "retrieved_chunk_ids": [
+        "deepseek-r1:b-6-ablation-study-of-language-consistency-reward:p35:0",
+        "deepseek-r1:6-conclusion-limitation-and-future-work:p10:2",
+        "deepseek-r1:2-2-reward-design:p3:0",
+        "deepseek-r1:1-introduction:p2:1",
+        "deepseek-r1:b-6-ablation-study-of-language-consistency-reward:p37:0"
+      ],
+      "claims": [],
+      "outcome": "answered_ok",
+      "latency_ms": 1564,
+      "llm_wait_ms": 0,
+      "tokens_in": 1724,
+      "tokens_out": 13
+    },
+    {
+      "id": "q011",
+      "system": "plain",
+      "question": "What is the current weather in Paris?",
+      "answerable": false,
+      "final_status": "answered",
+      "answer": "The context does not contain it.",
+      "retry_count": 0,
+      "retrieved_chunk_ids": [
+        "deepseek-r1:d-3-3-safety-taxonomic-study-of-r1-on-in-house-benchmark:p51:0",
+        "deepseek-r1:d-3-3-safety-taxonomic-study-of-r1-on-in-house-benchmark:p52:2",
+        "deepseek-r1:j-evaluation-prompts-and-settings:p76:0",
+        "deepseek-r1:j-evaluation-prompts-and-settings:p78:0",
+        "deepseek-r1:d-3-4-multilingual-safety-performance:p53:0"
+      ],
+      "claims": [],
+      "outcome": "hallucinated",
+      "latency_ms": 21714,
+      "llm_wait_ms": 0,
+      "tokens_in": 2489,
+      "tokens_out": 7
+    },
+    {
+      "id": "q012",
+      "system": "plain",
+      "question": "Who is the CEO of DeepSeek?",
+      "answerable": false,
+      "final_status": "answered",
+      "answer": "The context does not contain it.",
+      "retry_count": 0,
+      "retrieved_chunk_ids": [
+        "deepseek-r1:a-1-deepseek-v3:p13:0",
+        "deepseek-r1:e-1-performance-comparison-with-deepseek-v3:p54:0",
+        "deepseek-r1:d-2-main-results:p42:0",
+        "deepseek-r1:d-2-main-results:p42:2",
+        "deepseek-r1:d-2-main-results:p41:2"
+      ],
+      "claims": [],
+      "outcome": "hallucinated",
+      "latency_ms": 1408,
+      "llm_wait_ms": 0,
+      "tokens_in": 1583,
+      "tokens_out": 7
+    },
+    {
+      "id": "q013",
+      "system": "plain",
+      "question": "How many parameters does DeepSeek-V4 have?",
+      "answerable": false,
+      "final_status": "answered",
+      "answer": "The context does not contain it.",
+      "retry_count": 0,
+      "retrieved_chunk_ids": [
+        "deepseek-r1:a-1-deepseek-v3:p13:0",
+        "deepseek-r1:d-1-experiment-setup:p40:2",
+        "deepseek-r1:b-4-1-hyper-parameters-of-deepseek-r1-zero-qwen-32b:p34:0",
+        "deepseek-r1:2-1-group-relative-policy-optimization:p3:0",
+        "deepseek-r1:b-4-2-hyper-parameters-of-sft:p35:0"
+      ],
+      "claims": [],
+      "outcome": "hallucinated",
+      "latency_ms": 1831,
+      "llm_wait_ms": 0,
+      "tokens_in": 1505,
+      "tokens_out": 7
+    },
+    {
+      "id": "q014",
+      "system": "plain",
+      "question": "How does DeepSeek-R1 compare to Llama 4 on AIME 2024?",
+      "answerable": false,
+      "final_status": "answered",
+      "answer": "The context does not contain it.",
+      "retry_count": 0,
+      "retrieved_chunk_ids": [
+        "deepseek-r1:e-2-generalization-to-real-world-competitions:p57:0",
+        "deepseek-r1:4-experiment:p9:2",
+        "deepseek-r1:e-1-performance-comparison-with-deepseek-v3:p54:0",
+        "deepseek-r1:d-2-main-results:p41:2",
+        "deepseek-r1:d-2-main-results:p42:0"
+      ],
+      "claims": [],
+      "outcome": "hallucinated",
+      "latency_ms": 12790,
+      "llm_wait_ms": 251,
+      "tokens_in": 1545,
+      "tokens_out": 7
+    },
+    {
+      "id": "q015",
+      "system": "plain",
+      "question": "Which FlashAttention version did DeepSeekMath use for pretraining?",
+      "answerable": false,
+      "final_status": "answered",
+      "answer": "The context does not contain it.",
+      "retry_count": 0,
+      "retrieved_chunk_ids": [
+        "deepseek-math:5-1-lessons-learnt-in-pre-training:p15:0",
+        "deepseek-math:6-conclusion-limitation-and-future-work:p22:1",
+        "deepseek-math:1-introduction:p2:3",
+        "deepseek-math:3-2-training-and-evaluating-deepseekmath-instruct-7b:p10:0",
+        "deepseek-math:2-2-2-evaluation-results:p6:0"
+      ],
+      "claims": [],
+      "outcome": "hallucinated",
+      "latency_ms": 30049,
+      "llm_wait_ms": 742,
+      "tokens_in": 1148,
+      "tokens_out": 7
+    },
+    {
+      "id": "q016",
+      "system": "plain",
+      "question": "What does the Dr. GRPO paper say about the DAPO clip-higher technique?",
+      "answerable": false,
+      "final_status": "answered",
+      "answer": "The context does not contain it.",
+      "retry_count": 0,
+      "retrieved_chunk_ids": [
+        "dr-grpo:c-extended-empirical-results:p15:0",
+        "dr-grpo:c-extended-empirical-results:p14:0",
+        "dr-grpo:3-1-grpo-leads-to-biased-optimization:p6:0",
+        "deepseek-r1:2-1-group-relative-policy-optimization:p2:0",
+        "dr-grpo:c-extended-empirical-results:p15:1"
+      ],
+      "claims": [],
+      "outcome": "hallucinated",
+      "latency_ms": 61668,
+      "llm_wait_ms": 0,
+      "tokens_in": 1683,
+      "tokens_out": 7
+    },
+    {
+      "id": "q017",
+      "system": "plain",
+      "question": "What was DeepSeek-R1's score on Humanity's Last Exam?",
+      "answerable": false,
+      "final_status": "answered",
+      "answer": "The context does not contain it.",
+      "retry_count": 0,
+      "retrieved_chunk_ids": [
+        "deepseek-r1:d-2-main-results:p42:1",
+        "deepseek-r1:d-2-main-results:p42:2",
+        "deepseek-r1:d-2-main-results:p42:0",
+        "deepseek-r1:e-2-generalization-to-real-world-competitions:p57:0",
+        "deepseek-r1:d-2-main-results:p41:2"
+      ],
+      "claims": [],
+      "outcome": "hallucinated",
+      "latency_ms": 2219,
+      "llm_wait_ms": 0,
+      "tokens_in": 1397,
+      "tokens_out": 7
+    },
+    {
+      "id": "q018",
+      "system": "plain",
+      "question": "Write a haiku about reinforcement learning.",
+      "answerable": false,
+      "final_status": "answered",
+      "answer": "The context does not contain it.",
+      "retry_count": 0,
+      "retrieved_chunk_ids": [
+        "deepseek-r1:3-2-2-training-details-of-the-second-rl-stage:p8:0",
+        "deepseek-r1:abstract:p1:0",
+        "deepseek-math:4-2-training-and-evaluating-deepseekmath-rl:p15:2",
+        "deepseek-math:4-1-4-iterative-rl-with-grpo:p15:0",
+        "deepseek-r1:a-1-deepseek-v3:p13:1"
+      ],
+      "claims": [],
+      "outcome": "hallucinated",
+      "latency_ms": 2224,
+      "llm_wait_ms": 0,
+      "tokens_in": 1331,
+      "tokens_out": 7
+    },
+    {
+      "id": "q001",
+      "system": "self_healing",
+      "question": "How does GRPO avoid needing a separate value model?",
+      "answerable": true,
+      "final_status": "answered",
+      "answer": "GRPO avoids needing a separate value model (or critic model) by estimating the baseline or advantage from group scores, specifically using the average reward (or group scores) of multiple sampled outputs produced in response to the same question [deepseek-math:1-1-contributions:p3:2, deepseek-math:1-introduction:p2:4, deepseek-math:4-1-1-from-ppo-to-grpo:p13:1, deepseek-r1:a-3-a-comparison-of-grpo-and-ppo:p14:0].",
+      "retry_count": 0,
+      "retrieved_chunk_ids": [
+        "dr-grpo:3-2-dr-grpo-group-relative-policy-optimization-done-right:p6:0",
+        "dr-grpo:1-introduction:p2:3",
+        "deepseek-math:4-1-1-from-ppo-to-grpo:p13:1",
+        "dr-grpo:abstract:p1:1",
+        "dr-grpo:3-1-grpo-leads-to-biased-optimization:p6:0",
+        "deepseek-math:1-1-contributions:p3:2",
+        "deepseek-math:1-introduction:p2:4",
+        "deepseek-math:4-1-1-from-ppo-to-grpo:p14:0",
+        "deepseek-r1:2-deepseek-r1-zero:p2:0",
+        "deepseek-r1:a-3-a-comparison-of-grpo-and-ppo:p14:0",
+        "deepseek-r1:2-1-group-relative-policy-optimization:p2:0"
+      ],
+      "claims": [
+        {
+          "text": "GRPO avoids needing a separate value model (or critic model) by estimating the baseline or advantage from group scores.",
+          "chunk_ids": [
+            "deepseek-math:1-1-contributions:p3:2",
+            "deepseek-math:1-introduction:p2:4",
+            "deepseek-math:4-1-1-from-ppo-to-grpo:p13:1",
+            "deepseek-r1:a-3-a-comparison-of-grpo-and-ppo:p14:0"
+          ],
+          "verdict": "supported"
+        },
+        {
+          "text": "GRPO uses the average reward (or group scores) of multiple sampled outputs produced in response to the same question.",
+          "chunk_ids": [
+            "deepseek-math:1-1-contributions:p3:2",
+            "deepseek-math:1-introduction:p2:4",
+            "deepseek-math:4-1-1-from-ppo-to-grpo:p13:1",
+            "deepseek-r1:a-3-a-comparison-of-grpo-and-ppo:p14:0"
+          ],
+          "verdict": "supported"
+        }
+      ],
+      "outcome": "answered_ok",
+      "latency_ms": 17587,
+      "llm_wait_ms": 81,
+      "tokens_in": 7914,
+      "tokens_out": 579
+    },
+    {
+      "id": "q002",
+      "system": "self_healing",
+      "question": "What learning rate and KL coefficient were used to train DeepSeek-R1-Zero?",
+      "answerable": true,
+      "final_status": "answered",
+      "answer": "To train DeepSeek-R1-Zero, the learning rate was set to 3e-6 and the KL coefficient was set to 0.001 [deepseek-r1:2-1-group-relative-policy-optimization:p3:0].",
+      "retry_count": 0,
+      "retrieved_chunk_ids": [
+        "deepseek-r1:2-1-group-relative-policy-optimization:p3:0",
+        "deepseek-r1:2-3-incentivize-reasoning-capability-in-llms:p4:0",
+        "dr-grpo:1-introduction:p1:0",
+        "deepseek-r1:b-4-1-hyper-parameters-of-deepseek-r1-zero-qwen-32b:p34:0",
+        "deepseek-math:4-2-training-and-evaluating-deepseekmath-rl:p15:0",
+        "dr-grpo:abstract:p1:0",
+        "deepseek-r1:2-3-incentivize-reasoning-capability-in-llms:p5:3",
+        "deepseek-r1:2-deepseek-r1-zero:p2:0",
+        "dr-grpo:1-introduction:p2:1"
+      ],
+      "claims": [
+        {
+          "text": "The learning rate to train DeepSeek-R1-Zero was set to 3e-6.",
+          "chunk_ids": [
+            "deepseek-r1:2-1-group-relative-policy-optimization:p3:0"
+          ],
+          "verdict": "supported"
+        },
+        {
+          "text": "The KL coefficient to train DeepSeek-R1-Zero was set to 0.001.",
+          "chunk_ids": [
+            "deepseek-r1:2-1-group-relative-policy-optimization:p3:0"
+          ],
+          "verdict": "supported"
+        }
+      ],
+      "outcome": "answered_ok",
+      "latency_ms": 18297,
+      "llm_wait_ms": 2198,
+      "tokens_in": 5312,
+      "tokens_out": 364
+    },
+    {
+      "id": "q003",
+      "system": "self_healing",
+      "question": "How many math tokens are in the DeepSeekMath Corpus and where do they come from?",
+      "answerable": true,
+      "final_status": "answered",
+      "answer": "The DeepSeekMath Corpus comprises 120B math tokens (or 120.2B tokens calculated using their tokenizer), which are extracted from the Common Crawl [deepseek-math:1-introduction:p2:1, deepseek-math:2-2-1-training-setting:p6:1].",
+      "retry_count": 0,
+      "retrieved_chunk_ids": [
+        "deepseek-math:2-2-validating-the-quality-of-the-deepseekmath-corpus:p6:0",
+        "deepseek-math:2-1-data-collection-and-decontamination:p4:0",
+        "deepseek-math:1-introduction:p2:1",
+        "deepseek-math:2-2-2-evaluation-results:p6:0",
+        "deepseek-math:2-2-1-training-setting:p6:1",
+        "deepseek-math:5-1-lessons-learnt-in-pre-training:p15:0"
+      ],
+      "claims": [
+        {
+          "text": "The DeepSeekMath Corpus comprises 120B math tokens (or 120.2B tokens calculated using their tokenizer).",
+          "chunk_ids": [
+            "deepseek-math:1-introduction:p2:1",
+            "deepseek-math:2-2-1-training-setting:p6:1"
+          ],
+          "verdict": "supported"
+        },
+        {
+          "text": "The tokens of the DeepSeekMath Corpus are extracted from the Common Crawl.",
+          "chunk_ids": [
+            "deepseek-math:1-introduction:p2:1",
+            "deepseek-math:2-2-1-training-setting:p6:1"
+          ],
+          "verdict": "supported"
+        }
+      ],
+      "outcome": "answered_ok",
+      "latency_ms": 6826,
+      "llm_wait_ms": 0,
+      "tokens_in": 3687,
+      "tokens_out": 375
+    },
+    {
+      "id": "q004",
+      "system": "self_healing",
+      "question": "What accuracy did DeepSeekMath 7B reach on the MATH benchmark?",
+      "answerable": true,
+      "final_status": "answered",
+      "answer": "When allowed to integrate natural language reasoning and program-based tool use for problem solving, DeepSeekMath-Instruct 7B approaches an accuracy of 60% on the MATH benchmark [deepseek-math:3-2-training-and-evaluating-deepseekmath-instruct-7b:p11:2].",
+      "retry_count": 0,
+      "retrieved_chunk_ids": [
+        "deepseek-math:3-2-training-and-evaluating-deepseekmath-instruct-7b:p11:2",
+        "deepseek-math:3-2-training-and-evaluating-deepseekmath-instruct-7b:p10:0",
+        "deepseek-math:2-3-training-and-evaluating-deepseekmath-base-7b:p7:0",
+        "deepseek-math:2-3-training-and-evaluating-deepseekmath-base-7b:p8:2",
+        "deepseek-math:2-3-training-and-evaluating-deepseekmath-base-7b:p8:0",
+        "deepseek-math:2-3-training-and-evaluating-deepseekmath-base-7b:p8:3",
+        "deepseek-math:1-introduction:p2:3"
+      ],
+      "claims": [
+        {
+          "text": "DeepSeekMath-Instruct 7B approaches an accuracy of 60% on the MATH benchmark when allowed to integrate natural language reasoning and program-based tool use for problem solving.",
+          "chunk_ids": [
+            "deepseek-math:3-2-training-and-evaluating-deepseekmath-instruct-7b:p11:2"
+          ],
+          "verdict": "supported"
+        }
+      ],
+      "outcome": "answered_ok",
+      "latency_ms": 9960,
+      "llm_wait_ms": 0,
+      "tokens_in": 4449,
+      "tokens_out": 283
+    },
+    {
+      "id": "q005",
+      "system": "self_healing",
+      "question": "What two biases does Dr. GRPO identify in GRPO?",
+      "answerable": true,
+      "final_status": "answered",
+      "answer": "Dr. GRPO identifies a response-level length bias and a standard deviation (std) normalization bias in GRPO [dr-grpo:c-extended-empirical-results:p14:0, dr-grpo:3-1-grpo-leads-to-biased-optimization:p6:1, dr-grpo:3-2-dr-grpo-group-relative-policy-optimization-done-right:p6:0].",
+      "retry_count": 0,
+      "retrieved_chunk_ids": [
+        "dr-grpo:c-extended-empirical-results:p15:0",
+        "dr-grpo:c-extended-empirical-results:p14:0",
+        "dr-grpo:3-1-grpo-leads-to-biased-optimization:p6:0",
+        "dr-grpo:3-1-grpo-leads-to-biased-optimization:p6:1",
+        "dr-grpo:3-2-dr-grpo-group-relative-policy-optimization-done-right:p6:0",
+        "deepseek-r1:a-3-a-comparison-of-grpo-and-ppo:p14:0",
+        "deepseek-math:1-introduction:p2:4",
+        "deepseek-math:1-1-contributions:p3:2",
+        "deepseek-math:4-1-1-from-ppo-to-grpo:p13:1",
+        "deepseek-math:4-1-1-from-ppo-to-grpo:p14:0"
+      ],
+      "claims": [
+        {
+          "text": "Dr. GRPO identifies a response-level length bias in GRPO.",
+          "chunk_ids": [
+            "dr-grpo:c-extended-empirical-results:p14:0",
+            "dr-grpo:3-1-grpo-leads-to-biased-optimization:p6:1",
+            "dr-grpo:3-2-dr-grpo-group-relative-policy-optimization-done-right:p6:0"
+          ],
+          "verdict": "supported"
+        },
+        {
+          "text": "Dr. GRPO identifies a standard deviation (std) normalization bias in GRPO.",
+          "chunk_ids": [
+            "dr-grpo:c-extended-empirical-results:p14:0",
+            "dr-grpo:3-1-grpo-leads-to-biased-optimization:p6:1",
+            "dr-grpo:3-2-dr-grpo-group-relative-policy-optimization-done-right:p6:0"
+          ],
+          "verdict": "supported"
+        }
+      ],
+      "outcome": "answered_ok",
+      "latency_ms": 10316,
+      "llm_wait_ms": 102,
+      "tokens_in": 7125,
+      "tokens_out": 495
+    },
+    {
+      "id": "q006",
+      "system": "self_healing",
+      "question": "What AIME 2024 accuracy does the minimalist R1-Zero recipe in the Dr. GRPO paper achieve, and with what base model size?",
+      "answerable": true,
+      "final_status": "refused",
+      "answer": null,
+      "retry_count": 2,
+      "retrieved_chunk_ids": [
+        "dr-grpo:abstract:p1:1",
+        "deepseek-r1:2-2-reward-design:p4:0",
+        "dr-grpo:c-extended-empirical-results:p15:0",
+        "deepseek-r1:2-1-group-relative-policy-optimization:p3:0",
+        "dr-grpo:1-introduction:p2:1",
+        "dr-grpo:c-extended-empirical-results:p14:0",
+        "deepseek-r1:e-2-generalization-to-real-world-competitions:p57:0",
+        "dr-grpo:1-introduction:p2:3",
+        "dr-grpo:3-2-dr-grpo-group-relative-policy-optimization-done-right:p6:0",
+        "dr-grpo:4-closing-remarks:p9:0",
+        "deepseek-r1:d-2-main-results:p42:1",
+        "deepseek-r1:d-2-main-results:p41:0",
+        "deepseek-r1:f-1-distillation-v-s-reinforcement-learning:p61:0",
+        "dr-grpo:3-2-dr-grpo-group-relative-policy-optimization-done-right:p7:1",
+        "deepseek-r1:2-1-group-relative-policy-optimization:p2:0",
+        "dr-grpo:1-introduction:p2:2",
+        "dr-grpo:3-3-a-duet-of-template-and-question-set-coverage-in-rl-dynam:p8:2",
+        "deepseek-r1:a-3-a-comparison-of-grpo-and-ppo:p14:0",
+        "dr-grpo:3-2-dr-grpo-group-relative-policy-optimization-done-right:p7:0"
+      ],
+      "claims": [],
+      "outcome": "false_refusal",
+      "latency_ms": 15682,
+      "llm_wait_ms": 0,
+      "tokens_in": 14390,
+      "tokens_out": 297
+    },
+    {
+      "id": "q007",
+      "system": "self_healing",
+      "question": "What was the total estimated training cost of DeepSeek-R1 and what GPU rental price was assumed?",
+      "answerable": true,
+      "final_status": "answered",
+      "answer": "The total estimated training cost for DeepSeek-R1 (including DeepSeek-R1-Zero, SFT data creation, and DeepSeek-R1 training) was 147K H800 GPU hours, which equals $294K USD, assuming an H800 rental price of $2 per GPU hour [deepseek-r1:b-6-ablation-study-of-language-consistency-reward:p35:0].",
+      "retry_count": 0,
+      "retrieved_chunk_ids": [
+        "deepseek-r1:b-4-4-training-cost:p35:0",
+        "deepseek-r1:b-6-ablation-study-of-language-consistency-reward:p35:0",
+        "deepseek-r1:b-4-1-hyper-parameters-of-deepseek-r1-zero-qwen-32b:p34:0",
+        "deepseek-r1:2-1-group-relative-policy-optimization:p3:0",
+        "deepseek-r1:d-2-main-results:p41:2"
+      ],
+      "claims": [
+        {
+          "text": "The total estimated training cost for DeepSeek-R1 (including DeepSeek-R1-Zero, SFT data creation, and DeepSeek-R1 training) was 147K H800 GPU hours.",
+          "chunk_ids": [
+            "deepseek-r1:b-6-ablation-study-of-language-consistency-reward:p35:0"
+          ],
+          "verdict": "supported"
+        },
+        {
+          "text": "The total estimated training cost for DeepSeek-R1 equals $294K USD.",
+          "chunk_ids": [
+            "deepseek-r1:b-6-ablation-study-of-language-consistency-reward:p35:0"
+          ],
+          "verdict": "supported"
+        },
+        {
+          "text": "The training cost calculation for DeepSeek-R1 assumed an H800 rental price of $2 per GPU hour.",
+          "chunk_ids": [
+            "deepseek-r1:b-6-ablation-study-of-language-consistency-reward:p35:0"
+          ],
+          "verdict": "supported"
+        }
+      ],
+      "outcome": "answered_ok",
+      "latency_ms": 36585,
+      "llm_wait_ms": 258,
+      "tokens_in": 3596,
+      "tokens_out": 434
+    },
+    {
+      "id": "q008",
+      "system": "self_healing",
+      "question": "What kinds of rule-based rewards does DeepSeek-R1-Zero use?",
+      "answerable": true,
+      "final_status": "answered",
+      "answer": "DeepSeek-R1-Zero uses accuracy rewards and format rewards as part of its rule-based reward system [deepseek-r1:2-2-reward-design:p3:0].",
+      "retry_count": 0,
+      "retrieved_chunk_ids": [
+        "deepseek-r1:2-2-reward-design:p3:0",
+        "deepseek-r1:2-3-incentivize-reasoning-capability-in-llms:p5:3",
+        "deepseek-r1:2-3-incentivize-reasoning-capability-in-llms:p4:0",
+        "deepseek-r1:6-conclusion-limitation-and-future-work:p11:1",
+        "deepseek-r1:3-2-2-training-details-of-the-second-rl-stage:p8:0",
+        "deepseek-r1:c-1-evolution-of-reasoning-capability-in-deepseek-r1-zero-du:p37:0",
+        "deepseek-r1:b-6-ablation-study-of-language-consistency-reward:p35:0",
+        "deepseek-r1:d-2-main-results:p41:2",
+        "deepseek-r1:d-2-main-results:p42:2"
+      ],
+      "claims": [
+        {
+          "text": "DeepSeek-R1-Zero uses accuracy rewards as part of its rule-based reward system.",
+          "chunk_ids": [
+            "deepseek-r1:2-2-reward-design:p3:0"
+          ],
+          "verdict": "supported"
+        },
+        {
+          "text": "DeepSeek-R1-Zero uses format rewards as part of its rule-based reward system.",
+          "chunk_ids": [
+            "deepseek-r1:2-2-reward-design:p3:0"
+          ],
+          "verdict": "supported"
+        }
+      ],
+      "outcome": "answered_ok",
+      "latency_ms": 8085,
+      "llm_wait_ms": 0,
+      "tokens_in": 5619,
+      "tokens_out": 258
+    },
+    {
+      "id": "q009",
+      "system": "self_healing",
+      "question": "Does training on arXiv papers help mathematical reasoning according to DeepSeekMath?",
+      "answerable": true,
+      "final_status": "answered",
+      "answer": "According to DeepSeekMath, training on arXiv papers brings no notable improvements across mathematical benchmarks and seems ineffective in improving mathematical reasoning [deepseek-math:1-1-contributions:p3:1, deepseek-math:5-1-2-arxiv-papers-seem-ineffective-in-improving-mathematica:p17:0].",
+      "retry_count": 0,
+      "retrieved_chunk_ids": [
+        "deepseek-math:5-1-2-arxiv-papers-seem-ineffective-in-improving-mathematica:p18:0",
+        "deepseek-math:5-1-2-arxiv-papers-seem-ineffective-in-improving-mathematica:p17:0",
+        "deepseek-math:1-1-contributions:p3:1",
+        "deepseek-math:1-introduction:p2:3",
+        "deepseek-math:5-1-1-code-training-benefits-mathematical-reasoning:p16:0",
+        "deepseek-math:3-2-training-and-evaluating-deepseekmath-instruct-7b:p10:0",
+        "deepseek-math:2-3-training-and-evaluating-deepseekmath-base-7b:p7:0",
+        "deepseek-math:abstract:p1:0",
+        "deepseek-math:3-2-training-and-evaluating-deepseekmath-instruct-7b:p11:2"
+      ],
+      "claims": [
+        {
+          "text": "According to DeepSeekMath, training on arXiv papers brings no notable improvements across mathematical benchmarks.",
+          "chunk_ids": [
+            "deepseek-math:1-1-contributions:p3:1",
+            "deepseek-math:5-1-2-arxiv-papers-seem-ineffective-in-improving-mathematica:p17:0"
+          ],
+          "verdict": "supported"
+        },
+        {
+          "text": "According to DeepSeekMath, training on arXiv papers seems ineffective in improving mathematical reasoning.",
+          "chunk_ids": [
+            "deepseek-math:1-1-contributions:p3:1",
+            "deepseek-math:5-1-2-arxiv-papers-seem-ineffective-in-improving-mathematica:p17:0"
+          ],
+          "verdict": "supported"
+        }
+      ],
+      "outcome": "answered_ok",
+      "latency_ms": 15916,
+      "llm_wait_ms": 0,
+      "tokens_in": 5053,
+      "tokens_out": 427
+    },
+    {
+      "id": "q010",
+      "system": "self_healing",
+      "question": "Why did DeepSeek-R1 add a language consistency reward and how is it computed?",
+      "answerable": true,
+      "final_status": "answered",
+      "answer": "DeepSeek-R1 added a language consistency reward because its alignment results in better readability that aligns with human preferences, despite causing a slight performance degradation [deepseek-r1:3-2-1-training-details-of-the-first-rl-stage:p8:0]. It is computed by directly adding the language consistency reward (`Rewardlanguage`) to the final reward, as part of the total reward formulation where `Reward = Rewardreasoning + Rewardgeneral + Rewardlanguage` [deepseek-r1:3-2-2-training-details-of-the-second-rl-stage:p8:0, deepseek-r1:3-2-1-training-details-of-the-first-rl-stage:p8:0].",
+      "retry_count": 0,
+      "retrieved_chunk_ids": [
+        "deepseek-r1:b-6-ablation-study-of-language-consistency-reward:p35:0",
+        "deepseek-r1:2-2-reward-design:p3:0",
+        "deepseek-r1:3-2-2-training-details-of-the-second-rl-stage:p8:0",
+        "deepseek-r1:6-conclusion-limitation-and-future-work:p11:1",
+        "deepseek-r1:3-2-1-training-details-of-the-first-rl-stage:p8:0",
+        "deepseek-r1:6-conclusion-limitation-and-future-work:p10:2",
+        "deepseek-r1:3-deepseek-r1:p6:0",
+        "deepseek-r1:1-introduction:p2:1",
+        "deepseek-r1:2-3-incentivize-reasoning-capability-in-llms:p5:3",
+        "deepseek-r1:6-conclusion-limitation-and-future-work:p10:0"
+      ],
+      "claims": [
+        {
+          "text": "DeepSeek-R1 added a language consistency reward because its alignment results in better readability that aligns with human preferences.",
+          "chunk_ids": [
+            "deepseek-r1:3-2-1-training-details-of-the-first-rl-stage:p8:0"
+          ],
+          "verdict": "supported"
+        },
+        {
+          "text": "The language consistency reward causes a slight performance degradation.",
+          "chunk_ids": [
+            "deepseek-r1:3-2-1-training-details-of-the-first-rl-stage:p8:0"
+          ],
+          "verdict": "supported"
+        },
+        {
+          "text": "The language consistency reward is computed by directly adding the language consistency reward (Rewardlanguage) to the final reward.",
+          "chunk_ids": [
+            "deepseek-r1:3-2-2-training-details-of-the-second-rl-stage:p8:0",
+            "deepseek-r1:3-2-1-training-details-of-the-first-rl-stage:p8:0"
+          ],
+          "verdict": "supported"
+        },
+        {
+          "text": "The language consistency reward is part of the total reward formulation Reward = Rewardreasoning + Rewardgeneral + Rewardlanguage.",
+          "chunk_ids": [
+            "deepseek-r1:3-2-2-training-details-of-the-second-rl-stage:p8:0",
+            "deepseek-r1:3-2-1-training-details-of-the-first-rl-stage:p8:0"
+          ],
+          "verdict": "supported"
+        }
+      ],
+      "outcome": "answered_ok",
+      "latency_ms": 61518,
+      "llm_wait_ms": 51348,
+      "tokens_in": 5609,
+      "tokens_out": 756
+    },
+    {
+      "id": "q011",
+      "system": "self_healing",
+      "question": "What is the current weather in Paris?",
+      "answerable": false,
+      "final_status": "refused",
+      "answer": null,
+      "retry_count": 0,
+      "retrieved_chunk_ids": [],
+      "claims": [],
+      "outcome": "correct_refusal",
+      "latency_ms": 1677,
+      "llm_wait_ms": 0,
+      "tokens_in": 279,
+      "tokens_out": 14
+    },
+    {
+      "id": "q012",
+      "system": "self_healing",
+      "question": "Who is the CEO of DeepSeek?",
+      "answerable": false,
+      "final_status": "refused",
+      "answer": null,
+      "retry_count": 0,
+      "retrieved_chunk_ids": [],
+      "claims": [],
+      "outcome": "correct_refusal",
+      "latency_ms": 1253,
+      "llm_wait_ms": 0,
+      "tokens_in": 279,
+      "tokens_out": 19
+    },
+    {
+      "id": "q013",
+      "system": "self_healing",
+      "question": "How many parameters does DeepSeek-V4 have?",
+      "answerable": false,
+      "final_status": "refused",
+      "answer": null,
+      "retry_count": 2,
+      "retrieved_chunk_ids": [
+        "deepseek-r1:d-2-main-results:p41:0",
+        "deepseek-r1:a-1-deepseek-v3:p13:0",
+        "deepseek-r1:2-1-group-relative-policy-optimization:p3:0",
+        "deepseek-r1:d-1-experiment-setup:p40:2",
+        "deepseek-r1:b-1-rl-infrastructure:p17:1",
+        "deepseek-r1:b-4-1-hyper-parameters-of-deepseek-r1-zero-qwen-32b:p34:0",
+        "deepseek-r1:2-2-reward-design:p4:0",
+        "deepseek-r1:d-2-main-results:p42:2",
+        "deepseek-r1:b-4-2-hyper-parameters-of-sft:p35:0",
+        "deepseek-r1:b-4-4-training-cost:p35:0",
+        "deepseek-r1:6-conclusion-limitation-and-future-work:p10:1",
+        "deepseek-r1:e-1-performance-comparison-with-deepseek-v3:p54:0",
+        "deepseek-r1:e-5-performance-of-each-stage-on-problems-of-varying-difficu:p60:0",
+        "deepseek-r1:d-3-3-safety-taxonomic-study-of-r1-on-in-house-benchmark:p51:2"
+      ],
+      "claims": [],
+      "outcome": "correct_refusal",
+      "latency_ms": 27782,
+      "llm_wait_ms": 780,
+      "tokens_in": 10670,
+      "tokens_out": 148
+    },
+    {
+      "id": "q014",
+      "system": "self_healing",
+      "question": "How does DeepSeek-R1 compare to Llama 4 on AIME 2024?",
+      "answerable": false,
+      "final_status": "refused",
+      "answer": null,
+      "retry_count": 0,
+      "retrieved_chunk_ids": [],
+      "claims": [],
+      "outcome": "correct_refusal",
+      "latency_ms": 38792,
+      "llm_wait_ms": 0,
+      "tokens_in": 293,
+      "tokens_out": 25
+    },
+    {
+      "id": "q015",
+      "system": "self_healing",
+      "question": "Which FlashAttention version did DeepSeekMath use for pretraining?",
+      "answerable": false,
+      "final_status": "refused",
+      "answer": null,
+      "retry_count": 2,
+      "retrieved_chunk_ids": [
+        "deepseek-math:unknown:p1:0",
+        "deepseek-math:3-2-training-and-evaluating-deepseekmath-instruct-7b:p10:0",
+        "deepseek-math:2-3-training-and-evaluating-deepseekmath-base-7b:p7:0",
+        "deepseek-math:abstract:p1:0",
+        "deepseek-math:1-introduction:p2:1",
+        "deepseek-math:3-2-training-and-evaluating-deepseekmath-instruct-7b:p11:2",
+        "deepseek-math:1-2-summary-of-evaluations-and-metrics:p4:1",
+        "deepseek-math:1-introduction:p2:3",
+        "deepseek-math:1-1-contributions:p3:1",
+        "deepseek-math:5-1-2-arxiv-papers-seem-ineffective-in-improving-mathematica:p18:0",
+        "deepseek-math:1-2-summary-of-evaluations-and-metrics:p4:2",
+        "deepseek-math:5-1-lessons-learnt-in-pre-training:p15:0",
+        "deepseek-math:6-conclusion-limitation-and-future-work:p22:1",
+        "deepseek-math:4-2-training-and-evaluating-deepseekmath-rl:p15:0",
+        "deepseek-math:4-1-1-from-ppo-to-grpo:p12:1",
+        "deepseek-r1:d-1-experiment-setup:p40:2",
+        "deepseek-math:2-2-2-evaluation-results:p6:0",
+        "deepseek-r1:e-2-generalization-to-real-world-competitions:p57:0",
+        "deepseek-r1:4-experiment:p9:3",
+        "deepseek-r1:a-1-deepseek-v3:p13:0"
+      ],
+      "claims": [],
+      "outcome": "correct_refusal",
+      "latency_ms": 130201,
+      "llm_wait_ms": 1083,
+      "tokens_in": 10985,
+      "tokens_out": 229
+    },
+    {
+      "id": "q016",
+      "system": "self_healing",
+      "question": "What does the Dr. GRPO paper say about the DAPO clip-higher technique?",
+      "answerable": false,
+      "final_status": "refused",
+      "answer": null,
+      "retry_count": 2,
+      "retrieved_chunk_ids": [
+        "dr-grpo:c-extended-empirical-results:p15:0",
+        "dr-grpo:3-1-grpo-leads-to-biased-optimization:p6:0",
+        "dr-grpo:c-extended-empirical-results:p14:0",
+        "deepseek-r1:2-1-group-relative-policy-optimization:p2:0",
+        "dr-grpo:c-extended-empirical-results:p15:1",
+        "deepseek-r1:a-3-a-comparison-of-grpo-and-ppo:p14:0",
+        "dr-grpo:abstract:p1:1",
+        "deepseek-math:4-1-1-from-ppo-to-grpo:p13:2",
+        "dr-grpo:1-introduction:p2:3",
+        "dr-grpo:3-analysis-on-reinforcement-learning:p5:3",
+        "dr-grpo:3-2-dr-grpo-group-relative-policy-optimization-done-right:p6:0",
+        "dr-grpo:3-2-dr-grpo-group-relative-policy-optimization-done-right:p7:1",
+        "deepseek-math:5-2-1-towards-to-a-unified-paradigm:p20:2"
+      ],
+      "claims": [],
+      "outcome": "correct_refusal",
+      "latency_ms": 42696,
+      "llm_wait_ms": 875,
+      "tokens_in": 11175,
+      "tokens_out": 231
+    },
+    {
+      "id": "q017",
+      "system": "self_healing",
+      "question": "What was DeepSeek-R1's score on Humanity's Last Exam?",
+      "answerable": false,
+      "final_status": "refused",
+      "answer": null,
+      "retry_count": 2,
+      "retrieved_chunk_ids": [
+        "deepseek-r1:d-2-main-results:p42:1",
+        "deepseek-r1:d-2-main-results:p42:2",
+        "deepseek-r1:e-2-generalization-to-real-world-competitions:p57:0",
+        "deepseek-r1:d-2-main-results:p41:2",
+        "deepseek-r1:d-2-main-results:p42:0",
+        "deepseek-r1:d-2-main-results:p41:0",
+        "deepseek-r1:e-1-performance-comparison-with-deepseek-v3:p54:0",
+        "deepseek-r1:e-4-an-analysis-on-cot-length:p60:0",
+        "deepseek-r1:e-1-performance-comparison-with-deepseek-v3:p56:2",
+        "deepseek-r1:e-3-mathematical-capabilities-breakdown-by-categories:p57:0",
+        "deepseek-r1:e-1-performance-comparison-with-deepseek-v3:p55:0",
+        "deepseek-r1:2-3-incentivize-reasoning-capability-in-llms:p4:0",
+        "deepseek-r1:2-2-reward-design:p3:0",
+        "deepseek-r1:d-1-experiment-setup:p40:2"
+      ],
+      "claims": [],
+      "outcome": "correct_refusal",
+      "latency_ms": 66091,
+      "llm_wait_ms": 345,
+      "tokens_in": 10452,
+      "tokens_out": 236
+    },
+    {
+      "id": "q018",
+      "system": "self_healing",
+      "question": "Write a haiku about reinforcement learning.",
+      "answerable": false,
+      "final_status": "refused",
+      "answer": null,
+      "retry_count": 0,
+      "retrieved_chunk_ids": [],
+      "claims": [],
+      "outcome": "correct_refusal",
+      "latency_ms": 19321,
+      "llm_wait_ms": 0,
+      "tokens_in": 279,
+      "tokens_out": 14
+    }
+  ],
+  "aggregates": {
+    "plain": {
+      "n_questions": 18,
+      "n_answerable": 10,
+      "n_unanswerable": 8,
+      "n_answered": 18,
+      "n_refused": 0,
+      "hallucination_rate": 0.5,
+      "faithfulness": 0.875,
+      "correct_refusals": {
+        "count": 0,
+        "rate": 0.0
+      },
+      "false_refusals": {
+        "count": 0,
+        "rate": 0.0
+      },
+      "latency_ms": {
+        "p50": 2177.0,
+        "p95": 61668.0
+      },
+      "cost_usd_estimate": 0.084161,
+      "tokens_in": 28154,
+      "tokens_out": 693
+    },
+    "self_healing": {
+      "n_questions": 18,
+      "n_answerable": 10,
+      "n_unanswerable": 8,
+      "n_answered": 9,
+      "n_refused": 9,
+      "hallucination_rate": 0.0,
+      "faithfulness": 1.0,
+      "correct_refusals": {
+        "count": 8,
+        "rate": 1.0
+      },
+      "false_refusals": {
+        "count": 1,
+        "rate": 0.1
+      },
+      "latency_ms": {
+        "p50": 15916.0,
+        "p95": 129118.0
+      },
+      "cost_usd_estimate": 0.241544,
+      "tokens_in": 107166,
+      "tokens_out": 5184
+    }
+  }
+}

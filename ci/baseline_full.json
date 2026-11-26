@@ -1,0 +1,65 @@
+{
+  "meta": {
+    "contract_version": 3,
+    "eval_mode": "full",
+    "prompt_version": "agent-1.0.0",
+    "judge_prompt_version": "judge-1.0.0",
+    "corpus_version": "a1b2c3d4e5f6",
+    "generator_model": "gemini-2.5-flash",
+    "critic_model": "gemini-2.5-flash",
+    "judge_model": "gemini-2.5-pro",
+    "git_sha": "0000000000000000000000000000000000000000",
+    "timestamp": "2026-11-20T09:00:00+00:00"
+  },
+  "results": [],
+  "aggregates": {
+    "plain": {
+      "n_questions": 3,
+      "n_answerable": 2,
+      "n_unanswerable": 1,
+      "n_answered": 3,
+      "n_refused": 0,
+      "hallucination_rate": 0.6667,
+      "faithfulness": 0.5,
+      "correct_refusals": {
+        "count": 0,
+        "rate": 0.0
+      },
+      "false_refusals": {
+        "count": 0,
+        "rate": 0.0
+      },
+      "latency_ms": {
+        "p50": 1600,
+        "p95": 1700
+      },
+      "cost_usd_estimate": 0.0009,
+      "tokens_in": 4400,
+      "tokens_out": 750
+    },
+    "self_healing": {
+      "n_questions": 3,
+      "n_answerable": 2,
+      "n_unanswerable": 1,
+      "n_answered": 2,
+      "n_refused": 1,
+      "hallucination_rate": 0.0,
+      "faithfulness": 1.0,
+      "correct_refusals": {
+        "count": 1,
+        "rate": 1.0
+      },
+      "false_refusals": {
+        "count": 0,
+        "rate": 0.0
+      },
+      "latency_ms": {
+        "p50": 3800,
+        "p95": 5000
+      },
+      "cost_usd_estimate": 0.0021,
+      "tokens_in": 9100,
+      "tokens_out": 750
+    }
+  }
+}
