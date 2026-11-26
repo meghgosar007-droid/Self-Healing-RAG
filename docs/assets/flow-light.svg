@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="750" viewBox="0 0 1000 750" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" role="img">
+<title>Self-healing RAG flow: plan, retrieve, generate, verify, retry</title>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#57606a"/></marker></defs>
+<rect x="0.5" y="0.5" width="999" height="749" rx="14" fill="#ffffff" stroke="#d0d7de"/>
+<rect x="390.0" y="24" width="220" height="46" rx="10" fill="#ffffff" stroke="#8c959f" stroke-width="2"/>
+<text x="500" y="53.0" font-size="18" font-weight="600" fill="#1f2328" text-anchor="middle">Question</text>
+<path d="M500,70 L500,104" fill="none" stroke="#57606a" stroke-width="2" stroke-linejoin="round" marker-end="url(#a)"/>
+<rect x="365.0" y="106" width="270" height="66" rx="10" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
+<text x="500" y="134.0" font-size="18" font-weight="600" fill="#1f2328" text-anchor="middle">Planner</text>
+<text x="500" y="158.0" font-size="14.5" font-weight="400" fill="#4d5661" text-anchor="middle">scope check + 2-3 sub-queries</text>
+<path d="M500,172 L500,198" fill="none" stroke="#57606a" stroke-width="2" stroke-linejoin="round"/>
+<path d="M310,198 L690,198" fill="none" stroke="#57606a" stroke-width="2" stroke-linejoin="round"/>
+<path d="M310,198 L310,222" fill="none" stroke="#57606a" stroke-width="2" stroke-linejoin="round" marker-end="url(#a)"/>
+<path d="M500,198 L500,222" fill="none" stroke="#57606a" stroke-width="2" stroke-linejoin="round" marker-end="url(#a)"/>
+<path d="M690,198 L690,222" fill="none" stroke="#57606a" stroke-width="2" stroke-linejoin="round" marker-end="url(#a)"/>
+<rect x="227.0" y="224" width="166" height="66" rx="10" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
+<text x="310" y="252.0" font-size="18" font-weight="600" fill="#1f2328" text-anchor="middle">Retriever 1</text>
+<text x="310" y="276.0" font-size="14.5" font-weight="400" fill="#4d5661" text-anchor="middle">top-k chunks</text>
+<rect x="417.0" y="224" width="166" height="66" rx="10" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
+<text x="500" y="252.0" font-size="18" font-weight="600" fill="#1f2328" text-anchor="middle">Retriever 2</text>
+<text x="500" y="276.0" font-size="14.5" font-weight="400" fill="#4d5661" text-anchor="middle">top-k chunks</text>
+<rect x="607.0" y="224" width="166" height="66" rx="10" fill="#ddf4ff" stroke="#0969da" stroke-width="2" stroke-dasharray="7 5"/>
+<text x="690" y="252.0" font-size="18" font-weight="600" fill="#1f2328" text-anchor="middle">Retriever 3</text>
+<text x="690" y="276.0" font-size="14.5" font-weight="400" fill="#4d5661" text-anchor="middle">optional</text>
+<path d="M310,290 L310,316" fill="none" stroke="#57606a" stroke-width="2" stroke-linejoin="round"/>
+<path d="M500,290 L500,316" fill="none" stroke="#57606a" stroke-width="2" stroke-linejoin="round"/>
+<path d="M690,290 L690,316" fill="none" stroke="#57606a" stroke-width="2" stroke-linejoin="round"/>
+<path d="M310,316 L690,316" fill="none" stroke="#57606a" stroke-width="2" stroke-linejoin="round"/>
+<path d="M500,316 L500,342" fill="none" stroke="#57606a" stroke-width="2" stroke-linejoin="round" marker-end="url(#a)"/>
+<rect x="365.0" y="344" width="270" height="66" rx="10" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
+<text x="500" y="372.0" font-size="18" font-weight="600" fill="#1f2328" text-anchor="middle">Merge</text>
+<text x="500" y="396.0" font-size="14.5" font-weight="400" fill="#4d5661" text-anchor="middle">de-duplicate by chunk id</text>
+<path d="M500,410 L500,450" fill="none" stroke="#57606a" stroke-width="2" stroke-linejoin="round" marker-end="url(#a)"/>
+<rect x="365.0" y="452" width="270" height="66" rx="10" fill="#fbefff" stroke="#8250df" stroke-width="2"/>
+<text x="500" y="480.0" font-size="18" font-weight="600" fill="#1f2328" text-anchor="middle">Generator</text>
+<text x="500" y="504.0" font-size="14.5" font-weight="400" fill="#4d5661" text-anchor="middle">answer with [chunk-id] citations</text>
+<path d="M500,518 L500,558" fill="none" stroke="#57606a" stroke-width="2" stroke-linejoin="round" marker-end="url(#a)"/>
+<rect x="365.0" y="560" width="270" height="66" rx="10" fill="#fff8c5" stroke="#9a6700" stroke-width="2"/>
+<text x="500" y="588.0" font-size="18" font-weight="600" fill="#1f2328" text-anchor="middle">Critic</text>
+<text x="500" y="612.0" font-size="14.5" font-weight="400" fill="#4d5661" text-anchor="middle">checks every claim</text>
+<path d="M500,626 L500,672" fill="none" stroke="#57606a" stroke-width="2" stroke-linejoin="round" marker-end="url(#a)"/>
+<text x="514" y="654" font-size="15" font-weight="600" fill="#1f2328" text-anchor="start">all supported</text>
+<rect x="390.0" y="674" width="220" height="54" rx="10" fill="#dafbe1" stroke="#1a7f37" stroke-width="2"/>
+<text x="500" y="707.0" font-size="18" font-weight="600" fill="#1f2328" text-anchor="middle">Answered</text>
+<path d="M365,593 L197,593" fill="none" stroke="#57606a" stroke-width="2" stroke-linejoin="round" marker-end="url(#a)"/>
+<text x="281" y="581" font-size="15" font-weight="600" fill="#1f2328" text-anchor="middle">unsupported</text>
+<text x="281" y="615" font-size="14.5" font-weight="400" fill="#4d5661" text-anchor="middle">retries left</text>
+<rect x="25.0" y="560" width="170" height="66" rx="10" fill="#fff8c5" stroke="#9a6700" stroke-width="2"/>
+<text x="110" y="588.0" font-size="18" font-weight="600" fill="#1f2328" text-anchor="middle">Rewriter</text>
+<text x="110" y="612.0" font-size="14.5" font-weight="400" fill="#4d5661" text-anchor="middle">new sub-queries</text>
+<path d="M110,560 L110,198 L308,198" fill="none" stroke="#57606a" stroke-width="2" stroke-linejoin="round" marker-end="url(#a)"/>
+<text x="124" y="420" font-size="15" font-weight="600" fill="#1f2328" text-anchor="start">retry, max 2</text>
+<text x="124" y="442" font-size="14.5" font-weight="400" fill="#4d5661" text-anchor="start">k grows by 3</text>
+<path d="M635,139 L890,139" fill="none" stroke="#57606a" stroke-width="2" stroke-linejoin="round"/>
+<text x="762" y="128" font-size="15" font-weight="400" fill="#4d5661" text-anchor="middle">out of scope</text>
+<path d="M635,377 L890,377" fill="none" stroke="#57606a" stroke-width="2" stroke-linejoin="round"/>
+<text x="762" y="366" font-size="15" font-weight="400" fill="#4d5661" text-anchor="middle">nothing retrieved</text>
+<path d="M890,139 L890,558" fill="none" stroke="#57606a" stroke-width="2" stroke-linejoin="round" marker-end="url(#a)"/>
+<path d="M635,593 L803,593" fill="none" stroke="#57606a" stroke-width="2" stroke-linejoin="round" marker-end="url(#a)"/>
+<text x="719" y="581" font-size="15" font-weight="600" fill="#1f2328" text-anchor="middle">unsupported</text>
+<text x="719" y="615" font-size="14.5" font-weight="400" fill="#4d5661" text-anchor="middle">no retries left</text>
+<rect x="805.0" y="560" width="170" height="66" rx="10" fill="#ffebe9" stroke="#cf222e" stroke-width="2"/>
+<text x="890" y="588.0" font-size="18" font-weight="600" fill="#1f2328" text-anchor="middle">Refused</text>
+<text x="890" y="612.0" font-size="14.5" font-weight="400" fill="#4d5661" text-anchor="middle">fixed message</text>
+</svg>
